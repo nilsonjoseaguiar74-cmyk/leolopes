@@ -290,18 +290,9 @@ export function EntryLanding() {
 
         {/* mountains */}
         {RIDGES.map((r, i) => (
-          <motion.div
-            key={i}
-            className="absolute inset-0 will-change-transform"
-            style={{
-              x: useTransform(x, [-1, 1], [r.depth, -r.depth]),
-              y: useTransform(y, [-1, 1], [r.depth * 0.28, -r.depth * 0.28]),
-              filter: `blur(${(RIDGES.length - 1 - i) * 1.6}px)`,
-            }}
-          >
-            <Ridge d={r.d} opacity={r.opacity} lineOpacity={r.line} />
-          </motion.div>
+          <RidgeLayer key={i} ridge={r} blur={(RIDGES.length - 1 - i) * 1.6} x={x} y={y} />
         ))}
+
 
         {/* volumetric fog */}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(to_top,var(--background),transparent)]" />
