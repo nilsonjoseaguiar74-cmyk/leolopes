@@ -19,6 +19,7 @@ import raceAsset from "@/assets/leonardo-race.jpg.asset.json";
 import {
   beforeAfter,
   brandWords,
+  contact,
   companies,
   faq,
   methodology,
@@ -136,7 +137,9 @@ function Hero() {
           <StaggerItem>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <a
-                href="#contato"
+                href={contact.whatsappUrl}
+                target="_blank"
+                rel="noreferrer noopener"
                 className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
                 style={{ boxShadow: "var(--shadow-signal)" }}
               >
@@ -193,12 +196,20 @@ function About() {
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-3xl" />
             <img
-              src={portrait}
-              alt="Retrato de Leonardo Lopes"
-              width={1008}
-              height={1264}
+              src={portraitAsset.url}
+              alt="Leonardo Lopes correndo em prova de rua"
+              width={753}
+              height={1443}
               loading="lazy"
               className="relative w-full rounded-2xl border border-border object-cover elevated"
+            />
+            <img
+              src={raceAsset.url}
+              alt="Leonardo Lopes ao final de uma corrida, com medalha de participação"
+              width={1170}
+              height={1613}
+              loading="lazy"
+              className="absolute -bottom-8 -right-4 hidden w-[38%] rounded-xl border border-border-strong object-cover elevated sm:block"
             />
           </div>
         </Reveal>
@@ -409,7 +420,9 @@ function PrimaryCta() {
               discurso pronto.
             </p>
             <a
-              href="#contato"
+              href={contact.whatsappUrl}
+              target="_blank"
+              rel="noreferrer noopener"
               className="mt-9 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
               style={{ boxShadow: "var(--shadow-signal)" }}
             >
@@ -628,13 +641,27 @@ function Contact() {
             aguarda a avaliação inicial.
           </p>
           <div className="mt-9 grid gap-3 text-sm">
-            {["WhatsApp · (31) 90000-0000", "contato@leonardolopes.com", "Belo Horizonte · MG"].map(
-              (x) => (
-                <div key={x} className="rounded-xl border border-border bg-surface/60 px-4 py-3.5">
-                  {x}
-                </div>
-              ),
-            )}
+            <a
+              href={contact.whatsappUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center justify-between rounded-xl border border-border bg-surface/60 px-4 py-3.5 transition-colors hover:border-primary/50"
+            >
+              {contact.whatsappLabel}
+              <ArrowUpRight className="size-4 text-primary" />
+            </a>
+            <a
+              href={contact.instagramUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center justify-between rounded-xl border border-border bg-surface/60 px-4 py-3.5 transition-colors hover:border-primary/50"
+            >
+              Instagram · {contact.instagramHandle}
+              <ArrowUpRight className="size-4 text-primary" />
+            </a>
+            <div className="rounded-xl border border-border bg-surface/60 px-4 py-3.5">
+              {contact.city}
+            </div>
           </div>
         </Reveal>
 
@@ -657,8 +684,18 @@ function Contact() {
                 className="rounded-xl border border-input bg-background/60 px-4 py-3 text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary/60 focus:ring-3 focus:ring-ring"
               />
             </label>
+            <a
+              href={contact.whatsappUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              onClick={() => setSent(true)}
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
+            >
+              {sent ? "Aberto no WhatsApp" : "Enviar e falar no WhatsApp"}
+            </a>
             <button
               type="submit"
+              hidden
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
             >
               {sent ? "Recebido — retorno em breve" : "Enviar e falar no WhatsApp"}
