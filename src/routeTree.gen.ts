@@ -12,6 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlunoRouteImport } from './routes/aluno'
 import { Route as AlunoIndexRouteImport } from './routes/aluno.index'
+import { Route as AlunoAvatarRouteImport } from './routes/aluno.avatar'
+import { Route as AlunoCoachRouteImport } from './routes/aluno.coach'
+import { Route as AlunoEvolucaoRouteImport } from './routes/aluno.evolucao'
+import { Route as AlunoTimelineRouteImport } from './routes/aluno.timeline'
+import { Route as AlunoTreinosRouteImport } from './routes/aluno.treinos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,28 +33,92 @@ const AlunoIndexRoute = AlunoIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AlunoRoute,
 } as any)
+const AlunoAvatarRoute = AlunoAvatarRouteImport.update({
+  id: '/avatar',
+  path: '/avatar',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoCoachRoute = AlunoCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoEvolucaoRoute = AlunoEvolucaoRouteImport.update({
+  id: '/evolucao',
+  path: '/evolucao',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoTimelineRoute = AlunoTimelineRouteImport.update({
+  id: '/timeline',
+  path: '/timeline',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoTreinosRoute = AlunoTreinosRouteImport.update({
+  id: '/treinos',
+  path: '/treinos',
+  getParentRoute: () => AlunoRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aluno': typeof AlunoRouteWithChildren
+  '/aluno/avatar': typeof AlunoAvatarRoute
+  '/aluno/coach': typeof AlunoCoachRoute
+  '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/timeline': typeof AlunoTimelineRoute
+  '/aluno/treinos': typeof AlunoTreinosRoute
   '/aluno/': typeof AlunoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aluno/avatar': typeof AlunoAvatarRoute
+  '/aluno/coach': typeof AlunoCoachRoute
+  '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/timeline': typeof AlunoTimelineRoute
+  '/aluno/treinos': typeof AlunoTreinosRoute
   '/aluno': typeof AlunoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aluno': typeof AlunoRouteWithChildren
+  '/aluno/avatar': typeof AlunoAvatarRoute
+  '/aluno/coach': typeof AlunoCoachRoute
+  '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/timeline': typeof AlunoTimelineRoute
+  '/aluno/treinos': typeof AlunoTreinosRoute
   '/aluno/': typeof AlunoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/aluno' | '/aluno/'
+  fullPaths:
+    | '/'
+    | '/aluno'
+    | '/aluno/avatar'
+    | '/aluno/coach'
+    | '/aluno/evolucao'
+    | '/aluno/timeline'
+    | '/aluno/treinos'
+    | '/aluno/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/aluno'
-  id: '__root__' | '/' | '/aluno' | '/aluno/'
+  to:
+    | '/'
+    | '/aluno/avatar'
+    | '/aluno/coach'
+    | '/aluno/evolucao'
+    | '/aluno/timeline'
+    | '/aluno/treinos'
+    | '/aluno'
+  id:
+    | '__root__'
+    | '/'
+    | '/aluno'
+    | '/aluno/avatar'
+    | '/aluno/coach'
+    | '/aluno/evolucao'
+    | '/aluno/timeline'
+    | '/aluno/treinos'
+    | '/aluno/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,14 +149,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlunoIndexRouteImport
       parentRoute: typeof AlunoRoute
     }
+    '/aluno/avatar': {
+      id: '/aluno/avatar'
+      path: '/avatar'
+      fullPath: '/aluno/avatar'
+      preLoaderRoute: typeof AlunoAvatarRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/coach': {
+      id: '/aluno/coach'
+      path: '/coach'
+      fullPath: '/aluno/coach'
+      preLoaderRoute: typeof AlunoCoachRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/evolucao': {
+      id: '/aluno/evolucao'
+      path: '/evolucao'
+      fullPath: '/aluno/evolucao'
+      preLoaderRoute: typeof AlunoEvolucaoRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/timeline': {
+      id: '/aluno/timeline'
+      path: '/timeline'
+      fullPath: '/aluno/timeline'
+      preLoaderRoute: typeof AlunoTimelineRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/treinos': {
+      id: '/aluno/treinos'
+      path: '/treinos'
+      fullPath: '/aluno/treinos'
+      preLoaderRoute: typeof AlunoTreinosRouteImport
+      parentRoute: typeof AlunoRoute
+    }
   }
 }
 
 interface AlunoRouteChildren {
+  AlunoAvatarRoute: typeof AlunoAvatarRoute
+  AlunoCoachRoute: typeof AlunoCoachRoute
+  AlunoEvolucaoRoute: typeof AlunoEvolucaoRoute
+  AlunoTimelineRoute: typeof AlunoTimelineRoute
+  AlunoTreinosRoute: typeof AlunoTreinosRoute
   AlunoIndexRoute: typeof AlunoIndexRoute
 }
 
 const AlunoRouteChildren: AlunoRouteChildren = {
+  AlunoAvatarRoute: AlunoAvatarRoute,
+  AlunoCoachRoute: AlunoCoachRoute,
+  AlunoEvolucaoRoute: AlunoEvolucaoRoute,
+  AlunoTimelineRoute: AlunoTimelineRoute,
+  AlunoTreinosRoute: AlunoTreinosRoute,
   AlunoIndexRoute: AlunoIndexRoute,
 }
 
