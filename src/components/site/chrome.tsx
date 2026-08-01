@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/logo-leonardo.jpg.asset.json";
+import { contact } from "@/lib/mock";
 
 const nav = [
   { label: "Sobre", href: "/#sobre" },
@@ -157,9 +158,9 @@ export function SiteFooter() {
           <FooterCol
             title="Contato"
             links={[
-              { label: "WhatsApp", href: "#contato" },
-              { label: "contato@leonardolopes.com", href: "#contato" },
-              { label: "Belo Horizonte · MG", href: "#contato" },
+              { label: contact.whatsappLabel, href: contact.whatsappUrl, external: true },
+              { label: `Instagram ${contact.instagramHandle}`, href: contact.instagramUrl, external: true },
+              { label: contact.city, href: "/#contato" },
             ]}
           />
         </div>
@@ -178,7 +179,7 @@ function FooterCol({
   links,
 }: {
   title: string;
-  links: { label: string; href?: string; to?: string }[];
+  links: { label: string; href?: string; to?: string; external?: boolean }[];
 }) {
   return (
     <div>
@@ -191,7 +192,11 @@ function FooterCol({
                 {l.label}
               </Link>
             ) : (
-              <a href={l.href} className="text-sm text-muted-foreground hover:text-foreground">
+              <a
+                href={l.href}
+                {...(l.external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
                 {l.label}
               </a>
             )}

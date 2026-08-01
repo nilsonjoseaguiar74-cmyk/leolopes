@@ -299,3 +299,15 @@ export const mediaLibrary = [
   { name: "guia-corrida.pdf", kind: "PDF", size: "1.1 MB", tags: ["material"] },
   { name: "projeto-bralar-01.jpg", kind: "Imagem", size: "2.4 MB", tags: ["projeto"] },
 ];
+
+// Contato real do profissional
+export const contact = {
+  whatsappNumber: "5531995527534",
+  whatsappLabel: "WhatsApp · (31) 99552-7534",
+  whatsappUrl:
+    "https://wa.me/5531995527534?text=" +
+    encodeURIComponent("Olá Leonardo! Vim pelo site e quero saber mais sobre o acompanhamento."),
+  instagramHandle: "@leonardolopes.prof",
+  instagramUrl: "https://www.instagram.com/leonardolopes.prof",
+  city: "Belo Horizonte · MG",
+};
