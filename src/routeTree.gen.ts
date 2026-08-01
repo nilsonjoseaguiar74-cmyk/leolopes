@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AlunoRouteImport } from './routes/aluno'
+import { Route as EmpresasRouteImport } from './routes/empresas'
 import { Route as AlunoIndexRouteImport } from './routes/aluno.index'
 import { Route as AlunoAgendaRouteImport } from './routes/aluno.agenda'
 import { Route as AlunoAvaliacoesRouteImport } from './routes/aluno.avaliacoes'
@@ -24,15 +26,27 @@ import { Route as AlunoMensagensRouteImport } from './routes/aluno.mensagens'
 import { Route as AlunoPerfilRouteImport } from './routes/aluno.perfil'
 import { Route as AlunoTimelineRouteImport } from './routes/aluno.timeline'
 import { Route as AlunoTreinosRouteImport } from './routes/aluno.treinos'
+import { Route as EmpresasIndexRouteImport } from './routes/empresas.index'
+import { Route as EmpresasFuncionariosRouteImport } from './routes/empresas.funcionarios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AlunoRoute = AlunoRouteImport.update({
   id: '/aluno',
   path: '/aluno',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmpresasRoute = EmpresasRouteImport.update({
+  id: '/empresas',
+  path: '/empresas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AlunoIndexRoute = AlunoIndexRouteImport.update({
@@ -100,10 +114,22 @@ const AlunoTreinosRoute = AlunoTreinosRouteImport.update({
   path: '/treinos',
   getParentRoute: () => AlunoRoute,
 } as any)
+const EmpresasIndexRoute = EmpresasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EmpresasRoute,
+} as any)
+const EmpresasFuncionariosRoute = EmpresasFuncionariosRouteImport.update({
+  id: '/funcionarios',
+  path: '/funcionarios',
+  getParentRoute: () => EmpresasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/aluno': typeof AlunoRouteWithChildren
+  '/empresas': typeof EmpresasRouteWithChildren
   '/aluno/agenda': typeof AlunoAgendaRoute
   '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
@@ -116,10 +142,13 @@ export interface FileRoutesByFullPath {
   '/aluno/perfil': typeof AlunoPerfilRoute
   '/aluno/timeline': typeof AlunoTimelineRoute
   '/aluno/treinos': typeof AlunoTreinosRoute
+  '/empresas/funcionarios': typeof EmpresasFuncionariosRoute
   '/aluno/': typeof AlunoIndexRoute
+  '/empresas/': typeof EmpresasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/aluno/agenda': typeof AlunoAgendaRoute
   '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
@@ -132,12 +161,16 @@ export interface FileRoutesByTo {
   '/aluno/perfil': typeof AlunoPerfilRoute
   '/aluno/timeline': typeof AlunoTimelineRoute
   '/aluno/treinos': typeof AlunoTreinosRoute
+  '/empresas/funcionarios': typeof EmpresasFuncionariosRoute
   '/aluno': typeof AlunoIndexRoute
+  '/empresas': typeof EmpresasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/aluno': typeof AlunoRouteWithChildren
+  '/empresas': typeof EmpresasRouteWithChildren
   '/aluno/agenda': typeof AlunoAgendaRoute
   '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
@@ -150,13 +183,17 @@ export interface FileRoutesById {
   '/aluno/perfil': typeof AlunoPerfilRoute
   '/aluno/timeline': typeof AlunoTimelineRoute
   '/aluno/treinos': typeof AlunoTreinosRoute
+  '/empresas/funcionarios': typeof EmpresasFuncionariosRoute
   '/aluno/': typeof AlunoIndexRoute
+  '/empresas/': typeof EmpresasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/aluno'
+    | '/empresas'
     | '/aluno/agenda'
     | '/aluno/avaliacoes'
     | '/aluno/avatar'
@@ -169,10 +206,13 @@ export interface FileRouteTypes {
     | '/aluno/perfil'
     | '/aluno/timeline'
     | '/aluno/treinos'
+    | '/empresas/funcionarios'
     | '/aluno/'
+    | '/empresas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/aluno/agenda'
     | '/aluno/avaliacoes'
     | '/aluno/avatar'
@@ -185,11 +225,15 @@ export interface FileRouteTypes {
     | '/aluno/perfil'
     | '/aluno/timeline'
     | '/aluno/treinos'
+    | '/empresas/funcionarios'
     | '/aluno'
+    | '/empresas'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/aluno'
+    | '/empresas'
     | '/aluno/agenda'
     | '/aluno/avaliacoes'
     | '/aluno/avatar'
@@ -202,12 +246,16 @@ export interface FileRouteTypes {
     | '/aluno/perfil'
     | '/aluno/timeline'
     | '/aluno/treinos'
+    | '/empresas/funcionarios'
     | '/aluno/'
+    | '/empresas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AlunoRoute: typeof AlunoRouteWithChildren
+  EmpresasRoute: typeof EmpresasRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -219,11 +267,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aluno': {
       id: '/aluno'
       path: '/aluno'
       fullPath: '/aluno'
       preLoaderRoute: typeof AlunoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/empresas': {
+      id: '/empresas'
+      path: '/empresas'
+      fullPath: '/empresas'
+      preLoaderRoute: typeof EmpresasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aluno/': {
@@ -317,6 +379,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlunoTreinosRouteImport
       parentRoute: typeof AlunoRoute
     }
+    '/empresas/': {
+      id: '/empresas/'
+      path: '/'
+      fullPath: '/empresas/'
+      preLoaderRoute: typeof EmpresasIndexRouteImport
+      parentRoute: typeof EmpresasRoute
+    }
+    '/empresas/funcionarios': {
+      id: '/empresas/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/empresas/funcionarios'
+      preLoaderRoute: typeof EmpresasFuncionariosRouteImport
+      parentRoute: typeof EmpresasRoute
+    }
   }
 }
 
@@ -354,9 +430,25 @@ const AlunoRouteChildren: AlunoRouteChildren = {
 
 const AlunoRouteWithChildren = AlunoRoute._addFileChildren(AlunoRouteChildren)
 
+interface EmpresasRouteChildren {
+  EmpresasFuncionariosRoute: typeof EmpresasFuncionariosRoute
+  EmpresasIndexRoute: typeof EmpresasIndexRoute
+}
+
+const EmpresasRouteChildren: EmpresasRouteChildren = {
+  EmpresasFuncionariosRoute: EmpresasFuncionariosRoute,
+  EmpresasIndexRoute: EmpresasIndexRoute,
+}
+
+const EmpresasRouteWithChildren = EmpresasRoute._addFileChildren(
+  EmpresasRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AlunoRoute: AlunoRouteWithChildren,
+  EmpresasRoute: EmpresasRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
