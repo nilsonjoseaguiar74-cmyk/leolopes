@@ -269,7 +269,7 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <section className={`surface-panel ${className}`}>
+    <section className={`surface-panel min-w-0 ${className}`}>
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-3.5 sm:px-5 sm:py-4">
         <h2 className="truncate text-sm font-medium">{title}</h2>
         {action}

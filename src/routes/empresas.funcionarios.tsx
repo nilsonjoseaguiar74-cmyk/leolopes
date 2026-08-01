@@ -30,7 +30,7 @@ function Funcionarios() {
       />
 
       <Panel title={`${rows.length} resultados`}>
-        <div className="overflow-x-auto">
+        <div className="no-scrollbar -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="text-left">
