@@ -394,24 +394,24 @@ export function EntryLanding() {
         initial={{ opacity: 0, y: -14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 1, ease: EASE }}
-        className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-5 sm:px-10"
+        className="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-3 sm:px-10 sm:pt-5"
       >
-        <div className="flex items-center gap-2 text-[10px] font-medium tracking-[0.28em] text-muted-foreground uppercase">
-          <Mountain className="size-3.5 text-primary" />
-          Leonardo&nbsp;OS
+        <div className="flex min-w-0 items-center gap-2 text-[9px] font-medium tracking-[0.2em] text-muted-foreground uppercase sm:text-[10px] sm:tracking-[0.28em]">
+          <Mountain className="size-3.5 shrink-0 text-primary" />
+          <span className="truncate">Leonardo&nbsp;OS</span>
         </div>
         <motion.button
           type="button"
           onClick={enter}
           whileHover={{ x: 3 }}
-          className="text-[10px] font-medium tracking-[0.28em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+          className="-mr-2 shrink-0 px-2 py-2 text-[9px] font-medium tracking-[0.2em] text-muted-foreground uppercase transition-colors hover:text-foreground sm:text-[10px] sm:tracking-[0.28em]"
         >
           Pular
         </motion.button>
       </motion.div>
 
       {/* ---------- Logo + nomenclature + copy + single CTA ---------- */}
-      <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
+      <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 pt-16 pb-[calc(3.5rem+env(safe-area-inset-bottom))] text-center sm:pt-0 sm:pb-0">
         <motion.div
           className="will-change-transform"
           style={{ x: logoX, y: logoY }}
@@ -424,7 +424,7 @@ export function EntryLanding() {
             alt="Logotipo Leonardo Lopes"
             width={880}
             height={660}
-            className="w-[80vw] max-w-[520px] select-none sm:w-[50vw]"
+            className="w-[58vw] max-w-[320px] select-none sm:w-[46vw] sm:max-w-[460px] [@media(max-height:700px)]:w-[42vw]"
             animate={reduced ? false : { y: [0, -10, 0] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -433,21 +433,21 @@ export function EntryLanding() {
         <LetterReveal
           text="LEONARDO LOPES"
           delay={1.1}
-          className="mt-1 text-[clamp(1rem,4.4vw,1.75rem)] font-semibold tracking-[0.34em] text-foreground"
+          className="mt-1 text-[clamp(0.85rem,3.6vw,1.65rem)] font-semibold tracking-[0.2em] text-foreground sm:tracking-[0.34em]"
         />
 
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ delay: 1.8, duration: 1.1, ease: EASE }}
-          className="mt-4 h-px w-40 origin-center bg-[linear-gradient(90deg,transparent,var(--primary),transparent)]"
+          className="mt-3.5 h-px w-28 origin-center bg-[linear-gradient(90deg,transparent,var(--primary),transparent)] sm:mt-4 sm:w-40"
         />
 
         <motion.p
           initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 2, duration: 1, ease: EASE }}
-          className="mt-3 text-[10px] tracking-[0.3em] text-muted-foreground uppercase"
+          className="mt-3 max-w-[30ch] text-[8.5px] leading-relaxed tracking-[0.18em] text-muted-foreground uppercase sm:text-[10px] sm:tracking-[0.3em]"
         >
           Personal Trainer · Trail &amp; Performance
         </motion.p>
@@ -456,7 +456,7 @@ export function EntryLanding() {
           initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 2.3, duration: 1.1, ease: EASE }}
-          className="mt-6 max-w-[22ch] text-balance text-lg font-medium tracking-tight text-foreground/90 sm:text-2xl"
+          className="mt-5 max-w-[20ch] text-balance text-[clamp(1.05rem,5.2vw,1.5rem)] font-medium leading-tight tracking-tight text-foreground/90 sm:mt-6 sm:text-2xl"
         >
           O próximo passo começa aqui.
         </motion.p>
@@ -469,7 +469,7 @@ export function EntryLanding() {
           transition={{ delay: 2.8, duration: 0.9, ease: EASE }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.98 }}
-          className="group relative mt-9 inline-flex items-center gap-2.5 rounded-full border border-border-strong bg-secondary/40 px-8 py-3.5 text-sm font-semibold tracking-tight backdrop-blur-md transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+          className="group relative mt-7 inline-flex min-h-[3rem] items-center gap-2.5 rounded-full border border-border-strong bg-secondary/40 px-7 py-3.5 text-sm font-semibold tracking-tight backdrop-blur-md transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none sm:mt-9 sm:px-8"
         >
           {!reduced && (
             <motion.span
@@ -484,19 +484,19 @@ export function EntryLanding() {
         </motion.button>
 
         {/* animated stats */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 [@media(max-height:720px)]:hidden">
+        <div className="mt-8 grid w-full max-w-sm grid-cols-3 items-start gap-x-3 sm:mt-10 sm:flex sm:max-w-none sm:flex-wrap sm:justify-center sm:gap-x-8 sm:gap-y-3 [@media(max-height:700px)]:hidden">
           {STATS.map((s, i) => (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ delay: 3.1 + i * 0.15, duration: 0.9, ease: EASE }}
-              className="text-center"
+              className="min-w-0 text-center"
             >
-              <div className="text-base font-semibold text-primary sm:text-lg">
+              <div className="text-sm font-semibold text-primary sm:text-lg">
                 <NumberCounter to={s.value} suffix={s.suffix} delay={3.2 + i * 0.15} reduced={reduced} />
               </div>
-              <div className="mt-1 text-[9px] tracking-[0.22em] text-muted-foreground uppercase">
+              <div className="mt-1 text-[8px] leading-tight tracking-[0.14em] text-muted-foreground uppercase sm:text-[9px] sm:tracking-[0.22em]">
                 {s.label}
               </div>
             </motion.div>
@@ -509,7 +509,7 @@ export function EntryLanding() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.8, duration: 0.9 }}
-        className="absolute inset-x-0 bottom-4 z-20 text-center text-[10px] tracking-[0.18em] text-muted-foreground uppercase"
+        className="absolute inset-x-0 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-20 px-6 text-center text-[9px] tracking-[0.16em] text-muted-foreground uppercase sm:text-[10px] sm:tracking-[0.18em]"
       >
         DEVs: Rodrigo - Rafaela - Vitor
       </motion.p>
