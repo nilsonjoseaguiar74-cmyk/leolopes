@@ -349,7 +349,7 @@ export function EntryLanding() {
       {/* ---------- Wireframe figure ---------- */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute bottom-[24%] left-1/2 h-[26vh] max-h-72 min-h-40 -translate-x-1/2 will-change-transform"
+        className="pointer-events-none absolute bottom-[7%] left-1/2 h-[18vh] max-h-56 min-h-28 -translate-x-1/2 opacity-80 will-change-transform"
         style={{
           x: useTransform(x, [-1, 1], [-14, 14]),
           y: useTransform(y, [-1, 1], [8, -8]),
@@ -423,7 +423,7 @@ export function EntryLanding() {
           initial={{ opacity: 1 }}
         >
           <LetterReveal text="Seu próximo nível começa com" delay={0.25} />
-          <span className="signal-text">
+          <span className="text-primary">
             <LetterReveal text="um movimento." delay={0.75} />
           </span>
         </motion.p>
