@@ -308,7 +308,7 @@ export function EntryLanding() {
         <motion.div
           className="absolute inset-x-0 bottom-[22%] h-40 opacity-40 blur-2xl"
           style={{ background: "linear-gradient(to top, color-mix(in oklab, var(--primary) 12%, transparent), transparent)" }}
-          animate={reduced ? undefined : { x: [-40, 40, -40] }}
+          animate={reduced ? { x: 0 } : { x: [-40, 40, -40] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
         />
 
