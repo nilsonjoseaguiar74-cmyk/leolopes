@@ -378,7 +378,7 @@ export function EntryLanding() {
       </main>
 
       {/* base */}
-      <footer className="absolute inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 px-5 pb-5 lg:px-10 lg:pb-7">
+      <footer className="absolute inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-between gap-2 px-5 pb-5 lg:px-10 lg:pb-7">
         <button
           onClick={() => go(index + 1)}
           className="inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
@@ -392,6 +392,7 @@ export function EntryLanding() {
           </motion.span>
           Role, deslize ou use as setas
         </button>
+        <p className="text-[10px] text-muted-foreground">DEVs: Rodrigo - Rafaela - Vitor</p>
         <p className="font-mono text-xs text-muted-foreground">
           {String(index + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}
         </p>

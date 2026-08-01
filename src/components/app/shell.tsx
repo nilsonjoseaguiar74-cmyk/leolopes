@@ -69,6 +69,10 @@ export function AppShell({
         >
           {children}
         </motion.main>
+
+        <footer className="border-t border-border px-4 py-4 text-center text-xs text-muted-foreground lg:px-8">
+          DEVs: Rodrigo - Rafaela - Vitor
+        </footer>
       </div>
 
       {/* Drawer — mobile */}
