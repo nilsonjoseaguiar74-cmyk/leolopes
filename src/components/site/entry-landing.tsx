@@ -484,7 +484,7 @@ export function EntryLanding() {
         </motion.button>
 
         {/* animated stats */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 [@media(max-height:720px)]:hidden">
           {STATS.map((s, i) => (
             <motion.div
               key={s.label}
