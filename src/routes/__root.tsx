@@ -77,24 +77,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Leonardo Lopes" },
+      { title: "Leonardo OS — Evolução física baseada em ciência" },
       {
         name: "description",
         content:
-          "O próximo passo começa aqui plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias.",
+          "Plataforma de acompanhamento de Leonardo Lopes: avaliação, treino personalizado e evolução contínua.",
       },
       { name: "author", content: "Leonardo Lopes" },
-      { property: "og:title", content: "Leonardo Lopes" },
+      { property: "og:title", content: "Leonardo OS" },
       {
         property: "og:description",
-        content: "O próximo passo começa aqui plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias.",
+        content: "Evolução física personalizada, ciência aplicada e acompanhamento contínuo.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Leonardo Lopes" },
-      { name: "twitter:description", content: "O próximo passo começa aqui plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b0f4a987-805c-437c-b76f-b43e4c7f2a05/id-preview-b8370e5b--cbd8177d-f741-4e9b-b5e5-8e58e0fa79d1.lovable.app-1785608894464.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b0f4a987-805c-437c-b76f-b43e4c7f2a05/id-preview-b8370e5b--cbd8177d-f741-4e9b-b5e5-8e58e0fa79d1.lovable.app-1785608894464.png" },
     ],
     links: [
       {
@@ -107,6 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap",
       },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
 

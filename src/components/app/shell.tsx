@@ -28,33 +28,33 @@ export function AppShell({
       </aside>
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-40 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border bg-background/85 px-4 py-2.5 pt-[max(0.625rem,env(safe-area-inset-top))] backdrop-blur-xl sm:gap-3 sm:py-3 lg:px-8">
-          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <header className="sticky top-0 z-40 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-background/80 px-4 py-3 backdrop-blur-xl lg:px-8">
+          <div className="flex min-w-0 items-center gap-3">
             <button
               onClick={() => setOpen(true)}
               aria-label="Abrir navegação"
-              className="grid size-11 shrink-0 place-items-center rounded-xl border border-border active:scale-95 lg:hidden"
+              className="grid size-9 shrink-0 place-items-center rounded-lg border border-border lg:hidden"
             >
-              <Menu className="size-5" />
+              <Menu className="size-4" />
             </button>
-            <div className="hidden min-w-0 items-center gap-2 rounded-full border border-border bg-surface/60 px-3.5 py-2 sm:flex sm:w-72 lg:w-80">
+            <div className="hidden min-w-0 items-center gap-2 rounded-full border border-border bg-surface/60 px-3.5 py-2 sm:flex sm:w-80">
               <Search className="size-4 shrink-0 text-muted-foreground" />
               <input
                 placeholder="Buscar…"
                 className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
               />
             </div>
-            <p className="truncate text-[15px] font-semibold tracking-tight sm:hidden">{workspace}</p>
+            <p className="truncate text-sm font-medium sm:hidden">{workspace}</p>
           </div>
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               aria-label="Notificações"
-              className="relative grid size-11 place-items-center rounded-xl border border-border active:scale-95 sm:size-9 sm:rounded-lg"
+              className="relative grid size-9 place-items-center rounded-lg border border-border"
             >
               <Bell className="size-4" />
-              <span className="absolute right-2.5 top-2.5 size-1.5 rounded-full bg-primary sm:right-2 sm:top-2" />
+              <span className="absolute right-2 top-2 size-1.5 rounded-full bg-primary" />
             </button>
-            <div className="grid size-11 place-items-center rounded-xl bg-primary/15 text-xs font-semibold text-primary sm:size-9 sm:rounded-lg">
+            <div className="grid size-9 place-items-center rounded-lg bg-primary/15 text-xs font-semibold text-primary">
               {user.name.slice(0, 2).toUpperCase()}
             </div>
           </div>
@@ -65,38 +65,14 @@ export function AppShell({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="px-4 py-5 sm:px-5 sm:py-6 lg:px-8 lg:py-10"
+          className="px-4 py-6 pb-24 lg:px-8 lg:py-10 lg:pb-16"
         >
           {children}
         </motion.main>
 
-        <footer className="border-t border-border px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-center text-[11px] text-muted-foreground lg:px-8 lg:text-xs">
+        <footer className="border-t border-border px-4 py-4 text-center text-xs text-muted-foreground lg:px-8">
           DEVs: Rodrigo - Rafaela - Vitor
         </footer>
-
-        {/* Bottom tab bar — mobile thumb navigation */}
-        <div className="h-[calc(4.5rem+env(safe-area-inset-bottom))] lg:hidden" aria-hidden />
-        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden">
-          <ul className="grid grid-cols-5">
-            {nav.slice(0, 5).map((item) => {
-              const active = pathname === item.to;
-              const Icon = item.icon;
-              return (
-                <li key={item.to}>
-                  <Link
-                    to={item.to}
-                    className={`flex min-h-[4.25rem] flex-col items-center justify-center gap-1 px-1 py-2 text-[10px] leading-tight transition-colors ${
-                      active ? "text-primary" : "text-muted-foreground"
-                    }`}
-                  >
-                    <Icon className="size-5 shrink-0" />
-                    <span className="w-full truncate text-center">{item.label.split(" ").pop()}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
       </div>
 
       {/* Drawer — mobile */}
@@ -224,15 +200,11 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="grid gap-3 sm:flex sm:items-end sm:justify-between sm:gap-4">
+    <div className="grid gap-4 sm:flex sm:items-end sm:justify-between">
       <div className="min-w-0">
-        <p className="eyebrow text-[10px]">{eyebrow}</p>
-        <h1 className="mt-1.5 text-[clamp(1.35rem,6vw,1.75rem)] font-semibold tracking-tight sm:mt-2 sm:text-3xl">
-          {title}
-        </h1>
-        {lead && (
-          <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-muted-foreground sm:text-sm">{lead}</p>
-        )}
+        <p className="eyebrow">{eyebrow}</p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1>
+        {lead && <p className="mt-2 max-w-xl text-sm text-muted-foreground">{lead}</p>}
       </div>
       {action}
     </div>
@@ -249,10 +221,10 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <motion.div whileHover={{ y: -4 }} className="surface-panel p-4 sm:p-5">
-      <p className="eyebrow truncate text-[9px] sm:text-[10px]">{label}</p>
-      <p className="mt-2 font-mono text-xl font-medium tracking-tight sm:mt-3 sm:text-2xl">{value}</p>
-      {hint && <p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">{hint}</p>}
+    <motion.div whileHover={{ y: -4 }} className="surface-panel p-5">
+      <p className="eyebrow">{label}</p>
+      <p className="mt-3 font-mono text-2xl font-medium">{value}</p>
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </motion.div>
   );
 }
@@ -269,12 +241,12 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <section className={`surface-panel min-w-0 ${className}`}>
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-3.5 sm:px-5 sm:py-4">
+    <section className={`surface-panel ${className}`}>
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-5 py-4">
         <h2 className="truncate text-sm font-medium">{title}</h2>
         {action}
       </header>
-      <div className="p-4 sm:p-5">{children}</div>
+      <div className="p-5">{children}</div>
     </section>
   );
 }
