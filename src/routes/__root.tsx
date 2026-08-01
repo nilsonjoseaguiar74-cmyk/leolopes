@@ -77,20 +77,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Leonardo OS — Evolução física baseada em ciência" },
+      { title: "Leonardo Lopes" },
       {
         name: "description",
         content:
-          "Plataforma de acompanhamento de Leonardo Lopes: avaliação, treino personalizado e evolução contínua.",
+          "Eleve-se.  Plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias.",
       },
       { name: "author", content: "Leonardo Lopes" },
-      { property: "og:title", content: "Leonardo OS" },
+      { property: "og:title", content: "Leonardo Lopes" },
       {
         property: "og:description",
-        content: "Evolução física personalizada, ciência aplicada e acompanhamento contínuo.",
+        content: "Eleve-se.  Plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Leonardo Lopes" },
+      { name: "twitter:description", content: "Eleve-se.  Plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e51ea89f-c314-41c7-9289-fdc0c3837cad/id-preview-38ef81a4--cbd8177d-f741-4e9b-b5e5-8e58e0fa79d1.lovable.app-1785612972653.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e51ea89f-c314-41c7-9289-fdc0c3837cad/id-preview-38ef81a4--cbd8177d-f741-4e9b-b5e5-8e58e0fa79d1.lovable.app-1785612972653.png" },
     ],
     links: [
       {
@@ -103,7 +107,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
 
