@@ -6,12 +6,12 @@ import logo from "@/assets/logo-leonardo.jpg.asset.json";
 import { contact } from "@/lib/mock";
 
 const nav = [
-  { label: "Sobre", href: "/#sobre" },
-  { label: "Metodologia", href: "/#metodologia" },
-  { label: "Resultados", href: "/#resultados" },
-  { label: "Projetos", href: "/#projetos" },
-  { label: "Produtos", href: "/#produtos" },
-  { label: "Blog", href: "/#blog" },
+  { label: "Sobre", href: "/home#sobre" },
+  { label: "Metodologia", href: "/home#metodologia" },
+  { label: "Resultados", href: "/home#resultados" },
+  { label: "Projetos", href: "/home#projetos" },
+  { label: "Produtos", href: "/home#produtos" },
+  { label: "Blog", href: "/home#blog" },
 ];
 
 export function SiteHeader() {
@@ -26,7 +26,7 @@ export function SiteHeader() {
       className="fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl"
     >
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5 lg:px-8">
-        <Link to="/" className="flex min-w-0 items-center gap-3">
+        <Link to="/home" className="flex min-w-0 items-center gap-3">
           <img
             src={logo.url}
             alt="Logotipo Leonardo Lopes"
@@ -150,9 +150,9 @@ export function SiteFooter() {
           <FooterCol
             title="Conteúdo"
             links={[
-              { label: "Blog", href: "/#blog" },
-              { label: "Projetos", href: "/#projetos" },
-              { label: "Produtos", href: "/#produtos" },
+              { label: "Blog", href: "/home#blog" },
+              { label: "Projetos", href: "/home#projetos" },
+              { label: "Produtos", href: "/home#produtos" },
             ]}
           />
           <FooterCol
@@ -160,7 +160,7 @@ export function SiteFooter() {
             links={[
               { label: contact.whatsappLabel, href: contact.whatsappUrl, external: true },
               { label: `Instagram ${contact.instagramHandle}`, href: contact.instagramUrl, external: true },
-              { label: contact.city, href: "/#contato" },
+              { label: contact.city, href: "/home#contato" },
             ]}
           />
         </div>
