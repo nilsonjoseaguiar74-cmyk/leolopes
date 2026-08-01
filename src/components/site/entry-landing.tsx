@@ -1,784 +1,494 @@
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  Compass,
-  Home,
-  Instagram,
-  LogIn,
-  MessageCircle,
-  SkipForward,
-  X,
-} from "lucide-react";
-
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { ArrowRight, Menu, X } from "lucide-react";
 import logo from "@/assets/logo-leonardo.jpg.asset.json";
-import portraitAsset from "@/assets/leonardo-run-portrait.jpg.asset.json";
-import raceAsset from "@/assets/leonardo-race.jpg.asset.json";
-import heroImg from "@/assets/hero-trail.jpg";
-import { contact, methodology, pains, projects, stats } from "@/lib/mock";
-
-/* ────────────────────────────── cenas ────────────────────────────── */
-
-const scenes = [
-  { id: "hero", label: "Abertura" },
-  { id: "leonardo", label: "Quem é Leonardo" },
-  { id: "dor", label: "A dor" },
-  { id: "metodologia", label: "Metodologia" },
-  { id: "resultados", label: "Resultados" },
-  { id: "projetos", label: "Projetos" },
-  { id: "cta", label: "Começar" },
-] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/* ────────────────────────── micro-componentes ────────────────────── */
+const menu = [
+  { label: "Home", href: "/home" },
+  { label: "Sobre", href: "/home#sobre" },
+  { label: "Metodologia", href: "/home#metodologia" },
+  { label: "Resultados", href: "/home#resultados" },
+  { label: "Projetos", href: "/home#projetos" },
+  { label: "Blog", href: "/home#blog" },
+  { label: "Produtos", href: "/home#produtos" },
+  { label: "Contato", href: "/home#contato" },
+];
 
-function LetterReveal({
-  text,
-  className,
-  delay = 0,
-}: {
-  text: string;
-  className?: string;
-  delay?: number;
-}) {
-  const words = text.split(" ");
-  let index = 0;
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const onChange = () => setReduced(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return reduced;
+}
+
+/** Normalized camera pointer: x/y in [-1, 1], depth in [0, 1]. */
+function useCamera(disabled: boolean) {
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const x = useSpring(rawX, { stiffness: 42, damping: 22, mass: 0.9 });
+  const y = useSpring(rawY, { stiffness: 42, damping: 22, mass: 0.9 });
+  const active = useMotionValue(0);
+  const glowIntensity = useSpring(active, { stiffness: 60, damping: 26 });
+
+  useEffect(() => {
+    if (disabled) return;
+    let frame = 0;
+    const set = (cx: number, cy: number) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        rawX.set(Math.max(-1, Math.min(1, (cx / window.innerWidth) * 2 - 1)));
+        rawY.set(Math.max(-1, Math.min(1, (cy / window.innerHeight) * 2 - 1)));
+        active.set(1);
+      });
+    };
+    const onMove = (e: PointerEvent) => set(e.clientX, e.clientY);
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) set(t.clientX, t.clientY);
+    };
+    const onOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma == null || e.beta == null) return;
+      rawX.set(Math.max(-1, Math.min(1, e.gamma / 28)));
+      rawY.set(Math.max(-1, Math.min(1, (e.beta - 45) / 34)));
+      active.set(1);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("deviceorientation", onOrientation);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("deviceorientation", onOrientation);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [disabled, rawX, rawY, active]);
+
+  return { x, y, glowIntensity };
+}
+
+function LetterReveal({ text, delay = 0 }: { text: string; delay?: number }) {
   return (
-    <span className={className} aria-label={text}>
-      {words.map((word, w) => (
-        <span key={`${word}-${w}`} className="inline-block whitespace-nowrap">
-          {word.split("").map((char) => {
-            const i = index++;
-            return (
-              <motion.span
-                key={`${char}-${i}`}
-                aria-hidden
-                className="inline-block"
-                initial={{ opacity: 0, y: "0.5em", filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.7, ease: EASE, delay: delay + i * 0.022 }}
-              >
-                {char}
-              </motion.span>
-            );
-          })}
-          {w < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+    <span aria-label={text} className="inline-block">
+      {text.split(" ").map((word, wi) => (
+        <span key={`${word}-${wi}`} className="inline-block whitespace-nowrap">
+          {word.split("").map((ch, ci) => (
+            <motion.span
+              key={`${ch}-${ci}`}
+              aria-hidden
+              className="inline-block will-change-transform"
+              initial={{ opacity: 0, y: "0.5em", filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{
+                delay: delay + wi * 0.055 + ci * 0.018,
+                duration: 0.85,
+                ease: EASE,
+              }}
+            >
+              {ch}
+            </motion.span>
+          ))}
+          <span aria-hidden>&nbsp;</span>
         </span>
       ))}
     </span>
   );
 }
 
-function useCountUp(target: number, decimals = 0, duration = 1400) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    let frame = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setValue(target * eased);
-      if (p < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [target, duration]);
-  return value.toFixed(decimals);
-}
-
-function NumberCounter({ value, className }: { value: string; className?: string }) {
-  const parsed = useMemo(() => {
-    const match = value.match(/[\d.,]+/);
-    const raw = match?.[0] ?? "0";
-    const numeric = Number(raw.replace(/\./g, "").replace(",", "."));
-    const decimals = raw.includes(",") ? 1 : 0;
-    return {
-      numeric: Number.isFinite(numeric) ? numeric : 0,
-      decimals,
-      prefix: match ? value.slice(0, match.index) : "",
-      suffix: match ? value.slice((match.index ?? 0) + raw.length) : value,
-      thousands: raw.includes("."),
-    };
-  }, [value]);
-
-  const current = useCountUp(parsed.numeric, parsed.decimals);
-  const display = parsed.thousands
-    ? Number(current).toLocaleString("pt-BR", { maximumFractionDigits: parsed.decimals })
-    : current.replace(".", ",");
-
+/** Minimal wireframe mountain ridge — one depth layer of the scene. */
+function Ridge({
+  d,
+  opacity,
+  lineOpacity,
+}: {
+  d: string;
+  opacity: number;
+  lineOpacity: number;
+}) {
   return (
-    <span className={className}>
-      {parsed.prefix}
-      {display}
-      {parsed.suffix}
-    </span>
+    <svg
+      viewBox="0 0 1440 520"
+      preserveAspectRatio="none"
+      className="absolute inset-x-0 bottom-0 h-[62%] w-full"
+      aria-hidden
+    >
+      <path d={`${d} L1440,520 L0,520 Z`} fill="var(--background)" opacity={opacity} />
+      <path
+        d={d}
+        fill="none"
+        stroke="var(--primary)"
+        strokeWidth="1.1"
+        opacity={lineOpacity}
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
   );
 }
 
-function TiltCard({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const rx = useSpring(0, { stiffness: 140, damping: 18 });
-  const ry = useSpring(0, { stiffness: 140, damping: 18 });
+type RidgeDef = { d: string; depth: number; opacity: number; line: number };
 
+function RidgeLayer({
+  ridge,
+  blur,
+  x,
+  y,
+}: {
+  ridge: RidgeDef;
+  blur: number;
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+}) {
+  const tx = useTransform(x, [-1, 1], [ridge.depth, -ridge.depth]);
+  const ty = useTransform(y, [-1, 1], [ridge.depth * 0.28, -ridge.depth * 0.28]);
   return (
     <motion.div
-      onPointerMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        ry.set(((e.clientX - r.left) / r.width - 0.5) * 12);
-        rx.set(((e.clientY - r.top) / r.height - 0.5) * -12);
-      }}
-      onPointerLeave={() => {
-        rx.set(0);
-        ry.set(0);
-      }}
-      style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      className={`glass-panel rounded-2xl border border-border p-6 will-change-transform ${className}`}
+      className="absolute inset-0 will-change-transform"
+      style={{ x: tx, y: ty, filter: `blur(${blur}px)` }}
     >
-      {children}
+      <Ridge d={ridge.d} opacity={ridge.opacity} lineOpacity={ridge.line} />
     </motion.div>
   );
 }
 
-function SceneShell({
-  children,
-  eyebrow,
-  parallax,
-}: {
-  children: React.ReactNode;
-  eyebrow: string;
-  parallax: { x: number; y: number };
-}) {
+const RIDGES: RidgeDef[] = [
+  { d: "M0,300 L210,182 L330,246 L520,120 L700,252 L880,168 L1080,268 L1250,196 L1440,286", depth: 10, opacity: 0.55, line: 0.1 },
+  { d: "M0,352 L180,268 L360,330 L560,222 L760,320 L960,250 L1160,336 L1320,286 L1440,344", depth: 22, opacity: 0.72, line: 0.16 },
+  { d: "M0,410 L220,344 L420,404 L620,320 L820,398 L1040,336 L1240,406 L1440,368", depth: 40, opacity: 0.88, line: 0.24 },
+  { d: "M0,470 L260,424 L500,472 L760,414 L1020,468 L1260,428 L1440,462", depth: 66, opacity: 1, line: 0.34 },
+];
+
+function Particles({ count = 26 }: { count?: number }) {
+  const seeds = useRef(
+    Array.from({ length: count }, (_, i) => ({
+      left: (i * 37) % 100,
+      top: (i * 61) % 100,
+      size: 1 + ((i * 13) % 3) * 0.6,
+      dur: 9 + ((i * 7) % 9),
+      delay: (i % 11) * 0.7,
+    })),
+  ).current;
+
   return (
-    <div className="relative mx-auto flex h-full w-full max-w-6xl flex-col justify-center px-6 pb-28 pt-24 lg:px-12">
-      <motion.div
-        style={{ x: parallax.x * 0.4, y: parallax.y * 0.4 }}
-        className="pointer-events-none absolute -left-24 top-1/4 size-[420px] rounded-full bg-primary/12 blur-[130px]"
-      />
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="eyebrow relative mb-6"
-      >
-        {eyebrow}
-      </motion.p>
-      <motion.div style={{ x: parallax.x * -0.18, y: parallax.y * -0.18 }} className="relative">
-        {children}
-      </motion.div>
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      {seeds.map((s, i) => (
+        <motion.span
+          key={i}
+          className="absolute rounded-full bg-primary/50"
+          style={{ left: `${s.left}%`, top: `${s.top}%`, width: s.size, height: s.size }}
+          animate={{ y: [0, -34, 0], opacity: [0, 0.7, 0] }}
+          transition={{ duration: s.dur, delay: s.delay, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
     </div>
   );
 }
 
-/* ───────────────────────────── experiência ───────────────────────── */
+/** Abstract wireframe human silhouette that lights up with the camera. */
+function MeshFigure({ energy }: { energy: number }) {
+  const nodes = [
+    [50, 6], [50, 20], [34, 30], [66, 30], [24, 46], [76, 46],
+    [50, 44], [40, 60], [60, 60], [36, 80], [64, 80], [32, 96], [68, 96],
+  ] as const;
+  const edges = [
+    [0, 1], [1, 2], [1, 3], [2, 4], [3, 5], [1, 6], [6, 7], [6, 8],
+    [7, 9], [8, 10], [9, 11], [10, 12], [7, 8], [2, 3],
+  ] as const;
+
+  return (
+    <svg viewBox="0 0 100 104" className="h-full w-full" aria-hidden>
+      <g stroke="var(--primary)" strokeLinecap="round">
+        {edges.map(([a, b], i) => (
+          <motion.line
+            key={i}
+            x1={nodes[a][0]}
+            y1={nodes[a][1]}
+            x2={nodes[b][0]}
+            y2={nodes[b][1]}
+            strokeWidth={0.7}
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.25 + energy * 0.55 }}
+            transition={{ duration: 1.4, delay: 0.35 + i * 0.05, ease: EASE }}
+          />
+        ))}
+      </g>
+      <g fill="var(--primary)">
+        {nodes.map(([cx, cy], i) => (
+          <motion.circle
+            key={i}
+            cx={cx}
+            cy={cy}
+            r={0.9}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 0.4 + energy * 0.6, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.6 + i * 0.04, ease: EASE }}
+          />
+        ))}
+      </g>
+    </svg>
+  );
+}
 
 export function EntryLanding() {
   const navigate = useNavigate();
-  const [index, setIndex] = useState(0);
-  const [dir, setDir] = useState(1);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const reduced = usePrefersReducedMotion();
   const [leaving, setLeaving] = useState(false);
-  const lock = useRef(false);
-  const touchY = useRef(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [energy, setEnergy] = useState(0.15);
+  const { x, y, glowIntensity } = useCamera(reduced || leaving);
 
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const cursorX = useSpring(pointerX, { stiffness: 380, damping: 32 });
-  const cursorY = useSpring(pointerY, { stiffness: 380, damping: 32 });
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    const unsub = glowIntensity.on("change", (v) => setEnergy(0.15 + v * 0.85));
+    return unsub;
+  }, [glowIntensity]);
 
-  const enter = useCallback(
-    (to: string) => {
+  // Camera transforms
+  const rotY = useTransform(x, [-1, 1], [5.5, -5.5]);
+  const rotX = useTransform(y, [-1, 1], [-3.5, 3.5]);
+  const zoom = useTransform(y, [-1, 1], [1.06, 0.99]);
+  const glowX = useTransform(x, [-1, 1], ["18%", "82%"]);
+  const glowY = useTransform(y, [-1, 1], ["24%", "72%"]);
+
+  const start = useCallback(
+    (immediate?: boolean) => {
       if (leaving) return;
       setLeaving(true);
-      window.setTimeout(() => navigate({ to }), 780);
+      window.setTimeout(() => navigate({ to: "/home" }), immediate ? 240 : 1150);
     },
     [leaving, navigate],
   );
 
-  const go = useCallback(
-    (next: number) => {
-      if (leaving) return;
-      if (next >= scenes.length) {
-        enter("/home");
-        return;
-      }
-      const target = Math.max(0, next);
-      setDir(target > index ? 1 : -1);
-      setIndex(target);
-    },
-    [enter, index, leaving],
-  );
-
   useEffect(() => {
-    const step = (delta: number) => {
-      if (lock.current) return;
-      lock.current = true;
-      window.setTimeout(() => (lock.current = false), 780);
-      go(index + delta);
-    };
-
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (Math.abs(e.deltaY) < 12) return;
-      step(e.deltaY > 0 ? 1 : -1);
-    };
     const onKey = (e: KeyboardEvent) => {
-      if (["ArrowDown", "PageDown", " ", "ArrowRight"].includes(e.key)) {
-        e.preventDefault();
-        step(1);
-      }
-      if (["ArrowUp", "PageUp", "ArrowLeft"].includes(e.key)) {
-        e.preventDefault();
-        step(-1);
-      }
       if (e.key === "Escape") setMenuOpen(false);
     };
-    const onTouchStart = (e: TouchEvent) => (touchY.current = e.touches[0]!.clientY);
-    const onTouchEnd = (e: TouchEvent) => {
-      const delta = touchY.current - (e.changedTouches[0]?.clientY ?? touchY.current);
-      if (Math.abs(delta) > 42) step(delta > 0 ? 1 : -1);
-    };
-    const onMove = (e: PointerEvent) => {
-      pointerX.set(e.clientX);
-      pointerY.set(e.clientY);
-      setTilt({
-        x: (e.clientX / window.innerWidth - 0.5) * 42,
-        y: (e.clientY / window.innerHeight - 0.5) * 42,
-      });
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("keydown", onKey);
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    window.addEventListener("pointermove", onMove);
-    return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchend", onTouchEnd);
-      window.removeEventListener("pointermove", onMove);
-    };
-  }, [go, index, pointerX, pointerY]);
-
-  const cursorScale = useTransform(cursorX, () => 1);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
-    <motion.div
+    <motion.main
+      className="relative h-[100svh] w-full overflow-hidden bg-background"
       animate={
         leaving
-          ? { opacity: 0, scale: 1.14, filter: "blur(22px)" }
+          ? { opacity: 0, scale: 1.28, filter: "blur(22px)" }
           : { opacity: 1, scale: 1, filter: "blur(0px)" }
       }
-      transition={{ duration: 0.78, ease: EASE }}
-      className="relative h-[100dvh] w-full overflow-hidden bg-background text-foreground lg:cursor-none"
+      transition={{ duration: 1.1, ease: EASE }}
+      style={{ perspective: 1200 }}
     >
-      {/* fundo cinematográfico */}
-      <motion.img
-        src={heroImg}
-        alt=""
+      <h1 className="sr-only">Leonardo Lopes — Leonardo OS: a jornada começa</h1>
+
+      {/* ---------- Scene (depth layers) ---------- */}
+      <motion.div
         aria-hidden
-        style={{ x: tilt.x * 0.6, y: tilt.y * 0.6 }}
-        animate={{ scale: 1 + index * 0.03, opacity: index === 0 ? 0.55 : 0.2 }}
-        transition={{ duration: 1.2, ease: EASE }}
-        className="absolute inset-0 size-full scale-110 object-cover"
-      />
-      <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
-      <div className="grid-lines pointer-events-none absolute inset-0 opacity-30" />
-
-      {/* topo */}
-      <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-5 py-4 lg:px-10 lg:py-6">
-        <button
-          onClick={() => setMenuOpen(true)}
-          className="flex items-center gap-3 rounded-full border border-border-strong bg-background/40 px-3 py-2 backdrop-blur transition-colors hover:bg-secondary"
-        >
-          <img
-            src={logo.url}
-            alt="Logotipo Leonardo Lopes"
-            width={28}
-            height={28}
-            className="size-7 rounded-md object-cover"
-          />
-          <span className="hidden text-sm font-semibold tracking-tight sm:block">Leonardo OS</span>
-        </button>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => enter("/home")}
-            className="hidden items-center gap-1.5 rounded-full border border-border px-3.5 py-2 text-xs text-muted-foreground backdrop-blur transition-colors hover:text-foreground sm:inline-flex"
-          >
-            <SkipForward className="size-3.5" />
-            Pular apresentação
-          </button>
-          <button
-            onClick={() => enter("/home")}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border-strong bg-background/40 px-3.5 py-2 text-xs font-medium backdrop-blur transition-colors hover:bg-secondary"
-          >
-            <Home className="size-3.5" />
-            Home
-          </button>
-          <button
-            onClick={() => enter("/aluno")}
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-transform hover:scale-[1.04]"
-            style={{ boxShadow: "var(--shadow-signal)" }}
-          >
-            <LogIn className="size-3.5" />
-            Entrar
-          </button>
-        </div>
-      </header>
-
-      {/* indicador lateral */}
-      <nav
-        aria-label="Cenas da apresentação"
-        className="absolute right-4 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-end gap-3 lg:flex"
+        className="absolute inset-0 will-change-transform"
+        style={{ rotateY: rotY, rotateX: rotX, scale: zoom, transformStyle: "preserve-3d" }}
       >
-        {scenes.map((s, i) => (
-          <button
-            key={s.id}
-            onClick={() => go(i)}
-            className="group flex items-center gap-3"
-            aria-current={i === index}
-          >
-            <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
-              {s.label}
-            </span>
-            <span
-              className={`h-px transition-all duration-500 ${
-                i === index ? "w-9 bg-primary" : "w-4 bg-border-strong group-hover:w-6"
-              }`}
-            />
-          </button>
+        {/* atmosphere */}
+        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_110%,color-mix(in_oklab,var(--primary)_10%,transparent),transparent_65%)]" />
+
+        {/* dynamic light following the cursor */}
+        <motion.div
+          className="absolute -inset-1/4 opacity-70 blur-3xl"
+          style={{
+            left: glowX,
+            top: glowY,
+            width: "48vmax",
+            height: "48vmax",
+            x: "-50%",
+            y: "-50%",
+            background:
+              "radial-gradient(circle, color-mix(in oklab, var(--primary) 24%, transparent), transparent 68%)",
+          }}
+        />
+
+        {/* light rays */}
+        <div className="absolute inset-x-0 top-0 h-[70%] opacity-[0.14] [mask-image:linear-gradient(to_bottom,black,transparent)] bg-[repeating-linear-gradient(102deg,color-mix(in_oklab,var(--primary)_60%,transparent)_0px,transparent_3px,transparent_42px)]" />
+
+        {/* mountains */}
+        {RIDGES.map((r, i) => (
+          <RidgeLayer key={i} ridge={r} blur={(RIDGES.length - 1 - i) * 1.6} x={x} y={y} />
         ))}
-      </nav>
 
-      {/* cenas */}
-      <main className="relative z-20 h-full">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.section
-            key={scenes[index]!.id}
-            initial={{ opacity: 0, y: dir * 46, filter: "blur(14px)", scale: 0.985 }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-            exit={{ opacity: 0, y: dir * -46, filter: "blur(14px)", scale: 1.015 }}
-            transition={{ duration: 0.72, ease: EASE }}
-            className="h-full"
-          >
-            <SceneContent index={index} tilt={tilt} onEnter={() => enter("/home")} onNext={() => go(index + 1)} />
-          </motion.section>
-        </AnimatePresence>
-      </main>
 
-      {/* base */}
-      <footer className="absolute inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-between gap-2 px-5 pb-5 lg:px-10 lg:pb-7">
-        <button
-          onClick={() => go(index + 1)}
-          className="inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <motion.span
-            animate={{ y: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-            className="grid size-8 place-items-center rounded-full border border-border-strong"
-          >
-            <ArrowDown className="size-3.5" />
-          </motion.span>
-          Role, deslize ou use as setas
-        </button>
-        <p className="text-[10px] text-muted-foreground">DEVs: Rodrigo - Rafaela - Vitor</p>
-        <p className="font-mono text-xs text-muted-foreground">
-          {String(index + 1).padStart(2, "0")} / {String(scenes.length).padStart(2, "0")}
-        </p>
-      </footer>
+        {/* volumetric fog */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(to_top,var(--background),transparent)]" />
+        <motion.div
+          className="absolute inset-x-0 bottom-[22%] h-40 opacity-40 blur-2xl"
+          style={{ background: "linear-gradient(to top, color-mix(in oklab, var(--primary) 12%, transparent), transparent)" }}
+          animate={reduced ? { x: 0 } : { x: [-40, 40, -40] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-      {/* barra de progresso */}
-      <motion.div
-        className="absolute inset-x-0 top-0 z-40 h-px origin-left bg-primary"
-        animate={{ scaleX: (index + 1) / scenes.length }}
-        transition={{ duration: 0.6, ease: EASE }}
-      />
+        {!reduced && <Particles />}
 
-      {/* menu lateral glass */}
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setMenuOpen(false)}
-              aria-label="Fechar menu"
-              className="absolute inset-0 z-40 bg-background/60 backdrop-blur-sm"
-            />
-            <motion.aside
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="glass-panel absolute inset-y-0 left-0 z-50 flex w-[86%] max-w-sm flex-col gap-8 border-r border-border p-7"
-            >
-              <div className="flex items-center justify-between">
-                <p className="eyebrow">Navegar</p>
-                <button
-                  onClick={() => setMenuOpen(false)}
-                  aria-label="Fechar menu"
-                  className="grid size-9 place-items-center rounded-full border border-border"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
+        {/* subtle noise */}
+        <svg className="absolute inset-0 h-full w-full opacity-[0.035] mix-blend-overlay">
+          <filter id="entry-noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#entry-noise)" />
+        </svg>
+      </motion.div>
 
-              <div className="grid gap-1">
-                {scenes.map((s, i) => (
-                  <button
-                    key={s.id}
-                    onClick={() => {
-                      go(i);
-                      setMenuOpen(false);
-                    }}
-                    className={`flex items-center justify-between rounded-xl px-4 py-3 text-left text-sm transition-colors hover:bg-secondary ${
-                      i === index ? "text-foreground" : "text-muted-foreground"
-                    }`}
-                  >
-                    {s.label}
-                    <span className="font-mono text-[10px]">{String(i + 1).padStart(2, "0")}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-auto grid gap-2">
-                {[
-                  { label: "Home completa", to: "/home" },
-                  { label: "Portal do aluno", to: "/aluno" },
-                  { label: "Portal corporativo", to: "/empresas" },
-                  { label: "Administração", to: "/admin" },
-                ].map((l) => (
-                  <button
-                    key={l.to}
-                    onClick={() => enter(l.to)}
-                    className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:bg-secondary"
-                  >
-                    {l.label}
-                    <ArrowUpRight className="size-4 text-primary" />
-                  </button>
-                ))}
-                <div className="mt-2 flex gap-2">
-                  <a
-                    href={contact.whatsappUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground"
-                  >
-                    <MessageCircle className="size-3.5" />
-                    WhatsApp
-                  </a>
-                  <a
-                    href={contact.instagramUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-xs"
-                  >
-                    <Instagram className="size-3.5" />
-                    Instagram
-                  </a>
-                </div>
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* cursor interativo */}
+      {/* ---------- Wireframe figure ---------- */}
       <motion.div
         aria-hidden
-        style={{ x: cursorX, y: cursorY, scale: cursorScale }}
-        className="pointer-events-none absolute left-0 top-0 z-[60] hidden lg:block"
+        className="pointer-events-none absolute bottom-[7%] left-1/2 h-[18vh] max-h-56 min-h-28 -translate-x-1/2 opacity-80 will-change-transform"
+        style={{
+          x: useTransform(x, [-1, 1], [-14, 14]),
+          y: useTransform(y, [-1, 1], [8, -8]),
+          filter: `drop-shadow(0 0 ${8 + energy * 22}px color-mix(in oklab, var(--primary) 45%, transparent))`,
+        }}
       >
-        <div className="-translate-x-1/2 -translate-y-1/2">
-          <div className="size-9 rounded-full border border-primary/50 bg-primary/10 backdrop-blur-[2px]" />
+        <div className="aspect-[100/104] h-full">
+          <MeshFigure energy={energy} />
         </div>
       </motion.div>
-    </motion.div>
-  );
-}
 
-/* ───────────────────────────── conteúdo ─────────────────────────── */
+      {/* ---------- Brand mark ---------- */}
+      <motion.div
+        className="absolute left-5 top-5 z-20 flex items-center gap-3 sm:left-8 sm:top-7"
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: EASE }}
+      >
+        <img
+          src={logo.url}
+          alt="Logotipo Leonardo Lopes"
+          width={36}
+          height={36}
+          className="size-9 rounded-lg object-cover"
+        />
+        <span className="eyebrow text-[10px]">Leonardo OS</span>
+      </motion.div>
 
-function SceneContent({
-  index,
-  tilt,
-  onEnter,
-  onNext,
-}: {
-  index: number;
-  tilt: { x: number; y: number };
-  onEnter: () => void;
-  onNext: () => void;
-}) {
-  const id = scenes[index]!.id;
-
-  if (id === "hero") {
-    return (
-      <SceneShell eyebrow="Leonardo OS · experiência de marca" parallax={tilt}>
-        <h1 className="max-w-4xl text-[2.7rem] font-semibold leading-[0.98] sm:text-6xl lg:text-[5.4rem]">
-          <LetterReveal text="Evolução física" />
-          <br />
-          <span className="signal-text">
-            <LetterReveal text="construída com ciência" delay={0.28} />
-          </span>
-        </h1>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
+      {/* ---------- Glass menu ---------- */}
+      <div className="absolute right-5 top-5 z-30 sm:right-8 sm:top-7">
+        <motion.button
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.7, ease: EASE }}
-          className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+          transition={{ duration: 0.8, ease: EASE }}
+          className="glass-panel grid size-11 place-items-center rounded-full transition-colors hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
-          Uma apresentação curta antes da plataforma. Sete cenas, um propósito: mostrar como o
-          acompanhamento próximo transforma rotina em resultado.
+          {menuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+        </motion.button>
+
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.nav
+              initial={{ opacity: 0, y: -8, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
+              transition={{ duration: 0.35, ease: EASE }}
+              className="glass-panel absolute right-0 mt-3 w-56 overflow-hidden p-2"
+            >
+              {menu.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="block rounded-lg px-3.5 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* ---------- Copy + actions ---------- */}
+      <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
+        <motion.p
+          className="max-w-[19ch] text-balance text-[2rem] font-semibold leading-[1.06] tracking-tight sm:max-w-[24ch] sm:text-5xl lg:text-6xl"
+          initial={{ opacity: 1 }}
+        >
+          <LetterReveal text="Seu próximo nível começa com" delay={0.25} />
+          <span className="text-primary">
+            <LetterReveal text="um movimento." delay={0.75} />
+          </span>
         </motion.p>
+
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.78, duration: 0.7, ease: EASE }}
-          className="mt-10 flex flex-wrap items-center gap-3"
+          transition={{ delay: 1.25, duration: 0.8, ease: EASE }}
+          className="mt-7 space-y-1"
+        >
+          <p className="text-sm font-medium tracking-tight">Leonardo Lopes</p>
+          <p className="eyebrow text-[10px]">Personal Trainer</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8, ease: EASE }}
+          className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
         >
           <button
-            onClick={onNext}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+            type="button"
+            onClick={() => start()}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
             style={{ boxShadow: "var(--shadow-signal)" }}
           >
-            <Compass className="size-4" />
-            Conhecer Leonardo
-          </button>
-          <button
-            onClick={onEnter}
-            className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-background/40 px-6 py-3.5 text-sm font-medium backdrop-blur transition-colors hover:bg-secondary"
-          >
-            Explorar a plataforma
+            Iniciar jornada
             <ArrowRight className="size-4" />
           </button>
-        </motion.div>
-      </SceneShell>
-    );
-  }
-
-  if (id === "leonardo") {
-    return (
-      <SceneShell eyebrow="Cena 02 · quem é Leonardo" parallax={tilt}>
-        <div className="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94, filter: "blur(12px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.9, ease: EASE }}
-            style={{ x: tilt.x * 0.25, y: tilt.y * 0.25, transformPerspective: 1000 }}
-            className="relative hidden lg:block"
+          <button
+            type="button"
+            onClick={() => start(true)}
+            className="rounded-full px-6 py-3.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
           >
-            <img
-              src={portraitAsset.url}
-              alt="Leonardo Lopes correndo em prova de rua"
-              width={753}
-              height={1443}
-              className="w-full rounded-2xl border border-border object-cover elevated"
-            />
-          </motion.div>
-          <div>
-            <h2 className="text-3xl font-semibold leading-[1.05] sm:text-4xl lg:text-[3.4rem]">
-              <LetterReveal text="Ciência, escuta e presença real" />
-            </h2>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-              Educação Física e Gestão Ambiental. Doze anos entre academias, pistas, piscinas e
-              trilhas — sempre com a mesma premissa: acolher antes de prescrever.
-            </p>
-            <div className="mt-9 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {stats.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.08, duration: 0.6, ease: EASE }}
-                >
-                  <NumberCounter value={s.value} className="font-mono text-2xl sm:text-3xl" />
-                  <p className="mt-1 text-xs leading-snug text-muted-foreground">{s.label}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </SceneShell>
-    );
-  }
+            Pular
+          </button>
+        </motion.div>
+      </div>
 
-  if (id === "dor") {
-    return (
-      <SceneShell eyebrow="Cena 03 · o ponto de partida" parallax={tilt}>
-        <h2 className="max-w-3xl text-3xl font-semibold leading-[1.06] sm:text-4xl lg:text-[3.4rem]">
-          <LetterReveal text="Talvez você reconheça algo aqui" />
-        </h2>
-        <div className="mt-10 flex flex-wrap gap-2.5">
-          {pains.map((p, i) => (
-            <motion.span
-              key={p}
-              initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: 0.15 + i * 0.06, duration: 0.6, ease: EASE }}
-              className="rounded-full border border-border bg-surface/50 px-4 py-2.5 text-sm text-muted-foreground backdrop-blur"
-            >
-              {p}
-            </motion.span>
-          ))}
-        </div>
-        <p className="mt-10 max-w-lg text-base leading-relaxed text-muted-foreground">
-          Nenhuma dessas frases é um defeito. São pontos de partida — e todos têm um caminho de
-          saída construído com método.
-        </p>
-      </SceneShell>
-    );
-  }
-
-  if (id === "metodologia") {
-    return (
-      <SceneShell eyebrow="Cena 04 · metodologia" parallax={tilt}>
-        <h2 className="max-w-3xl text-3xl font-semibold leading-[1.06] sm:text-4xl lg:text-[3.2rem]">
-          <LetterReveal text="Quatro etapas, zero improviso" />
-        </h2>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {methodology.map((m, i) => (
-            <motion.div
-              key={m.step}
-              initial={{ opacity: 0, y: 26, rotateX: -8 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ delay: 0.12 + i * 0.09, duration: 0.7, ease: EASE }}
-            >
-              <TiltCard className="h-full">
-                <p className="font-mono text-xs text-primary">{m.step}</p>
-                <h3 className="mt-4 text-base font-medium">{m.title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{m.text}</p>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </SceneShell>
-    );
-  }
-
-  if (id === "resultados") {
-    return (
-      <SceneShell eyebrow="Cena 05 · resultados" parallax={tilt}>
-        <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <h2 className="text-3xl font-semibold leading-[1.06] sm:text-4xl lg:text-[3.2rem]">
-              <LetterReveal text="Resultado é consequência de constância" />
-            </h2>
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              {[
-                { v: "94%", l: "retenção após 6 meses" },
-                { v: "2.100", l: "avaliações realizadas" },
-                { v: "480", l: "alunos acompanhados" },
-              ].map((k, i) => (
-                <motion.div
-                  key={k.l}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + i * 0.1, duration: 0.6, ease: EASE }}
-                >
-                  <TiltCard>
-                    <NumberCounter value={k.v} className="font-mono text-3xl" />
-                    <p className="mt-2 text-xs text-muted-foreground">{k.l}</p>
-                  </TiltCard>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <motion.img
-            src={raceAsset.url}
-            alt="Leonardo Lopes ao final de uma corrida"
-            width={1170}
-            height={1613}
-            initial={{ opacity: 0, scale: 0.95, filter: "blur(14px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 0.9, ease: EASE }}
-            style={{ x: tilt.x * -0.3, y: tilt.y * -0.3 }}
-            className="hidden max-h-[46vh] w-full rounded-2xl border border-border object-cover elevated lg:block"
-          />
-        </div>
-      </SceneShell>
-    );
-  }
-
-  if (id === "projetos") {
-    return (
-      <SceneShell eyebrow="Cena 06 · projetos" parallax={tilt}>
-        <h2 className="max-w-3xl text-3xl font-semibold leading-[1.06] sm:text-4xl lg:text-[3.2rem]">
-          <LetterReveal text="Movimento que alcança pessoas e comunidades" />
-        </h2>
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <motion.div
-              key={p.title}
-              initial={{ opacity: 0, y: 28, rotateY: dirTilt(i) }}
-              animate={{ opacity: 1, y: 0, rotateY: 0 }}
-              transition={{ delay: 0.12 + i * 0.1, duration: 0.75, ease: EASE }}
-            >
-              <TiltCard className="h-full">
-                <p className="eyebrow text-primary">{p.kind}</p>
-                <h3 className="mt-4 text-lg font-medium">{p.title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </div>
-      </SceneShell>
-    );
-  }
-
-  return (
-    <SceneShell eyebrow="Cena 07 · próximo passo" parallax={tilt}>
-      <h2 className="max-w-3xl text-[2.4rem] font-semibold leading-[1.02] sm:text-5xl lg:text-[4.4rem]">
-        <LetterReveal text="Pronto para entrar" />
-        <br />
-        <span className="signal-text">
-          <LetterReveal text="no Leonardo OS?" delay={0.24} />
-        </span>
-      </h2>
-      <p className="mt-7 max-w-xl text-base leading-relaxed text-muted-foreground">
-        A partir daqui você acessa a plataforma completa: metodologia, resultados, produtos,
-        portais e acompanhamento.
-      </p>
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.7, ease: EASE }}
-        className="mt-10 flex flex-wrap items-center gap-3"
+      {/* ---------- Footer credit ---------- */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.9, duration: 0.8 }}
+        className="absolute inset-x-0 bottom-4 z-20 text-center text-[10px] tracking-[0.18em] text-muted-foreground uppercase"
       >
-        <button
-          onClick={onEnter}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
-          style={{ boxShadow: "var(--shadow-signal)" }}
-        >
-          Entrar na plataforma
-          <ArrowRight className="size-4" />
-        </button>
-        <a
-          href={contact.whatsappUrl}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-background/40 px-7 py-4 text-sm font-medium backdrop-blur transition-colors hover:bg-secondary"
-        >
-          <MessageCircle className="size-4" />
-          Falar pelo WhatsApp
-        </a>
-      </motion.div>
-    </SceneShell>
-  );
-}
+        DEVs: Rodrigo - Rafaela - Vitor
+      </motion.p>
 
-function dirTilt(i: number) {
-  return i === 0 ? -10 : i === 2 ? 10 : 0;
+      {/* ---------- Light expansion on exit ---------- */}
+      <AnimatePresence>
+        {leaving && (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 z-40 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 65%, transparent), transparent 70%)",
+            }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 22, opacity: [0, 0.85, 0] }}
+            transition={{ duration: 1.1, ease: EASE }}
+          />
+        )}
+      </AnimatePresence>
+    </motion.main>
+  );
 }
