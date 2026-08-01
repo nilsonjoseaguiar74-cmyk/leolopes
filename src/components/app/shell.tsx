@@ -90,7 +90,7 @@ export function AppShell({
                     }`}
                   >
                     <Icon className="size-5 shrink-0" />
-                    <span className="w-full truncate text-center">{item.label}</span>
+                    <span className="w-full truncate text-center">{item.label.split(" ").pop()}</span>
                   </Link>
                 </li>
               );
