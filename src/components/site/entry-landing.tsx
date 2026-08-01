@@ -133,7 +133,32 @@ function Ridge({
   );
 }
 
-const RIDGES = [
+type RidgeDef = { d: string; depth: number; opacity: number; line: number };
+
+function RidgeLayer({
+  ridge,
+  blur,
+  x,
+  y,
+}: {
+  ridge: RidgeDef;
+  blur: number;
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+}) {
+  const tx = useTransform(x, [-1, 1], [ridge.depth, -ridge.depth]);
+  const ty = useTransform(y, [-1, 1], [ridge.depth * 0.28, -ridge.depth * 0.28]);
+  return (
+    <motion.div
+      className="absolute inset-0 will-change-transform"
+      style={{ x: tx, y: ty, filter: `blur(${blur}px)` }}
+    >
+      <Ridge d={ridge.d} opacity={ridge.opacity} lineOpacity={ridge.line} />
+    </motion.div>
+  );
+}
+
+const RIDGES: RidgeDef[] = [
   { d: "M0,300 L210,182 L330,246 L520,120 L700,252 L880,168 L1080,268 L1250,196 L1440,286", depth: 10, opacity: 0.55, line: 0.1 },
   { d: "M0,352 L180,268 L360,330 L560,222 L760,320 L960,250 L1160,336 L1320,286 L1440,344", depth: 22, opacity: 0.72, line: 0.16 },
   { d: "M0,410 L220,344 L420,404 L620,320 L820,398 L1040,336 L1240,406 L1440,368", depth: 40, opacity: 0.88, line: 0.24 },
