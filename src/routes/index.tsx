@@ -1,21 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LandingPage } from "@/components/site/landing";
+import { EntryLanding } from "@/components/site/entry-landing";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Leonardo Lopes — Evolução física com ciência e acompanhamento" },
+      { title: "Leonardo OS — Experiência de marca de Leonardo Lopes" },
       {
         name: "description",
         content:
-          "Consultoria individual, avaliação física, corrida, musculação e longevidade. Acompanhamento próximo e prescrição baseada em evidências.",
+          "Uma apresentação cinematográfica em sete cenas: quem é Leonardo Lopes, a metodologia, os resultados e os projetos antes de entrar na plataforma.",
       },
-      { property: "og:title", content: "Leonardo Lopes — Evolução física com ciência" },
+      { property: "og:title", content: "Leonardo OS — Experiência de marca" },
       {
         property: "og:description",
-        content: "Não quero apenas o seu investimento. Quero o seu resultado.",
+        content: "Sete cenas para entender como ciência e acompanhamento viram evolução física.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: LandingPage,
+  component: EntryLanding,
 });

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AlunoRouteImport } from './routes/aluno'
 import { Route as EmpresasRouteImport } from './routes/empresas'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminSplatRouteImport } from './routes/admin.$'
 import { Route as AdminBibliotecaRouteImport } from './routes/admin.biblioteca'
@@ -53,6 +54,11 @@ const AlunoRoute = AlunoRouteImport.update({
 const EmpresasRoute = EmpresasRouteImport.update({
   id: '/empresas',
   path: '/empresas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -166,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/aluno': typeof AlunoRouteWithChildren
   '/empresas': typeof EmpresasRouteWithChildren
+  '/home': typeof HomeRoute
   '/admin/$': typeof AdminSplatRoute
   '/admin/biblioteca': typeof AdminBibliotecaRoute
   '/admin/cms': typeof AdminCmsRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/home': typeof HomeRoute
   '/admin/$': typeof AdminSplatRoute
   '/admin/biblioteca': typeof AdminBibliotecaRoute
   '/admin/cms': typeof AdminCmsRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/aluno': typeof AlunoRouteWithChildren
   '/empresas': typeof EmpresasRouteWithChildren
+  '/home': typeof HomeRoute
   '/admin/$': typeof AdminSplatRoute
   '/admin/biblioteca': typeof AdminBibliotecaRoute
   '/admin/cms': typeof AdminCmsRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aluno'
     | '/empresas'
+    | '/home'
     | '/admin/$'
     | '/admin/biblioteca'
     | '/admin/cms'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/home'
     | '/admin/$'
     | '/admin/biblioteca'
     | '/admin/cms'
@@ -298,6 +309,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aluno'
     | '/empresas'
+    | '/home'
     | '/admin/$'
     | '/admin/biblioteca'
     | '/admin/cms'
@@ -326,6 +338,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AlunoRoute: typeof AlunoRouteWithChildren
   EmpresasRoute: typeof EmpresasRouteWithChildren
+  HomeRoute: typeof HomeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -356,6 +369,13 @@ declare module '@tanstack/react-router' {
       path: '/empresas'
       fullPath: '/empresas'
       preLoaderRoute: typeof EmpresasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -581,17 +601,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AlunoRoute: AlunoRouteWithChildren,
   EmpresasRoute: EmpresasRouteWithChildren,
+  HomeRoute: HomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
