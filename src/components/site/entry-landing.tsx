@@ -119,7 +119,7 @@ function Contour({
         stroke="var(--primary)"
         strokeWidth={0.9 + t * 0.7}
         vectorEffect="non-scaling-stroke"
-        initial={reduced ? undefined : { pathLength: 0, opacity: 0 }}
+        initial={reduced ? false : { pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 0.1 + t * 0.3 }}
         transition={{ duration: 2.2, delay: 0.2 + index * 0.07, ease: EASE }}
       />
