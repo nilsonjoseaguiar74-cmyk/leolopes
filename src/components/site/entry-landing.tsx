@@ -270,22 +270,24 @@ export function EntryLanding() {
 
       {/* ---------- Logo + copy + single CTA ---------- */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
-        <motion.div
-          className="will-change-transform"
-          style={{ x: logoX, y: logoY }}
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(18px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 2.1, ease: EASE }}
-        >
-          <img
-            src={logoGlow.url}
-            alt="Logotipo Leonardo Lopes"
-            width={880}
-            height={660}
-            className="w-[76vw] max-w-[520px] mix-blend-screen select-none sm:w-[52vw]"
-            style={{ filter: "drop-shadow(0 0 60px color-mix(in oklab, var(--primary) 30%, transparent))" }}
-          />
-        </motion.div>
+        <div className="mix-blend-screen">
+          <motion.div
+            className="will-change-transform"
+            style={{ x: logoX, y: logoY }}
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(18px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{ duration: 2.1, ease: EASE }}
+          >
+            <img
+              src={logoGlow.url}
+              alt="Logotipo Leonardo Lopes"
+              width={880}
+              height={660}
+              className="w-[80vw] max-w-[560px] select-none sm:w-[54vw]"
+            />
+          </motion.div>
+        </div>
+
 
         <motion.p
           initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
