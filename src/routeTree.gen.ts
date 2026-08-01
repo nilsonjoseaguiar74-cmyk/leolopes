@@ -15,6 +15,9 @@ import { Route as AlunoRouteImport } from './routes/aluno'
 import { Route as EmpresasRouteImport } from './routes/empresas'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminSplatRouteImport } from './routes/admin.$'
+import { Route as AdminBibliotecaRouteImport } from './routes/admin.biblioteca'
+import { Route as AdminCmsRouteImport } from './routes/admin.cms'
+import { Route as AdminCrmRouteImport } from './routes/admin.crm'
 import { Route as AlunoIndexRouteImport } from './routes/aluno.index'
 import { Route as AlunoAgendaRouteImport } from './routes/aluno.agenda'
 import { Route as AlunoAvaliacoesRouteImport } from './routes/aluno.avaliacoes'
@@ -60,6 +63,21 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminSplatRoute = AdminSplatRouteImport.update({
   id: '/$',
   path: '/$',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBibliotecaRoute = AdminBibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCmsRoute = AdminCmsRouteImport.update({
+  id: '/cms',
+  path: '/cms',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCrmRoute = AdminCrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
   getParentRoute: () => AdminRoute,
 } as any)
 const AlunoIndexRoute = AlunoIndexRouteImport.update({
@@ -149,6 +167,9 @@ export interface FileRoutesByFullPath {
   '/aluno': typeof AlunoRouteWithChildren
   '/empresas': typeof EmpresasRouteWithChildren
   '/admin/$': typeof AdminSplatRoute
+  '/admin/biblioteca': typeof AdminBibliotecaRoute
+  '/admin/cms': typeof AdminCmsRoute
+  '/admin/crm': typeof AdminCrmRoute
   '/aluno/agenda': typeof AlunoAgendaRoute
   '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
@@ -170,6 +191,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/$': typeof AdminSplatRoute
+  '/admin/biblioteca': typeof AdminBibliotecaRoute
+  '/admin/cms': typeof AdminCmsRoute
+  '/admin/crm': typeof AdminCrmRoute
   '/aluno/agenda': typeof AlunoAgendaRoute
   '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
@@ -195,6 +219,9 @@ export interface FileRoutesById {
   '/aluno': typeof AlunoRouteWithChildren
   '/empresas': typeof EmpresasRouteWithChildren
   '/admin/$': typeof AdminSplatRoute
+  '/admin/biblioteca': typeof AdminBibliotecaRoute
+  '/admin/cms': typeof AdminCmsRoute
+  '/admin/crm': typeof AdminCrmRoute
   '/aluno/agenda': typeof AlunoAgendaRoute
   '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
@@ -221,6 +248,9 @@ export interface FileRouteTypes {
     | '/aluno'
     | '/empresas'
     | '/admin/$'
+    | '/admin/biblioteca'
+    | '/admin/cms'
+    | '/admin/crm'
     | '/aluno/agenda'
     | '/aluno/avaliacoes'
     | '/aluno/avatar'
@@ -242,6 +272,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin/$'
+    | '/admin/biblioteca'
+    | '/admin/cms'
+    | '/admin/crm'
     | '/aluno/agenda'
     | '/aluno/avaliacoes'
     | '/aluno/avatar'
@@ -266,6 +299,9 @@ export interface FileRouteTypes {
     | '/aluno'
     | '/empresas'
     | '/admin/$'
+    | '/admin/biblioteca'
+    | '/admin/cms'
+    | '/admin/crm'
     | '/aluno/agenda'
     | '/aluno/avaliacoes'
     | '/aluno/avatar'
@@ -334,6 +370,27 @@ declare module '@tanstack/react-router' {
       path: '/$'
       fullPath: '/admin/$'
       preLoaderRoute: typeof AdminSplatRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/biblioteca': {
+      id: '/admin/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/admin/biblioteca'
+      preLoaderRoute: typeof AdminBibliotecaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cms': {
+      id: '/admin/cms'
+      path: '/cms'
+      fullPath: '/admin/cms'
+      preLoaderRoute: typeof AdminCmsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/crm': {
+      id: '/admin/crm'
+      path: '/crm'
+      fullPath: '/admin/crm'
+      preLoaderRoute: typeof AdminCrmRouteImport
       parentRoute: typeof AdminRoute
     }
     '/aluno/': {
@@ -453,11 +510,17 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminSplatRoute: typeof AdminSplatRoute
+  AdminBibliotecaRoute: typeof AdminBibliotecaRoute
+  AdminCmsRoute: typeof AdminCmsRoute
+  AdminCrmRoute: typeof AdminCrmRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminSplatRoute: AdminSplatRoute,
+  AdminBibliotecaRoute: AdminBibliotecaRoute,
+  AdminCmsRoute: AdminCmsRoute,
+  AdminCrmRoute: AdminCrmRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -522,3 +585,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
