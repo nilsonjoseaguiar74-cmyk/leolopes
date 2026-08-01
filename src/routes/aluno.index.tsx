@@ -12,7 +12,7 @@ export const Route = createFileRoute("/aluno/")({
 
 function AlunoDashboard() {
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6 sm:gap-8">
       <PageHeader
         eyebrow={`Bem-vinda de volta`}
         title={`Olá, ${student.name.split(" ")[0]}`}
@@ -28,7 +28,7 @@ function AlunoDashboard() {
         }
       />
 
-      <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {insights.map((i) => (
           <StaggerItem key={i.label}>
             <StatCard label={i.label} value={i.value} hint={i.hint} />
