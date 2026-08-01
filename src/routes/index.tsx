@@ -4,16 +4,16 @@ import { EntryLanding } from "@/components/site/entry-landing";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Leonardo OS — Experiência de marca de Leonardo Lopes" },
+      { title: "Leonardo Lopes — O próximo passo começa aqui" },
       {
         name: "description",
         content:
-          "Uma apresentação cinematográfica em sete cenas: quem é Leonardo Lopes, a metodologia, os resultados e os projetos antes de entrar na plataforma.",
+          "Abertura cinematográfica da plataforma de Leonardo Lopes: montanha, trilha e evolução física construída todos os dias.",
       },
-      { property: "og:title", content: "Leonardo OS — Experiência de marca" },
+      { property: "og:title", content: "Leonardo Lopes — O próximo passo começa aqui" },
       {
         property: "og:description",
-        content: "Sete cenas para entender como ciência e acompanhamento viram evolução física.",
+        content: "Entrada premium para a jornada de evolução física com ciência e trilha.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
