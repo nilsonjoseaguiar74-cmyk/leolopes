@@ -12,9 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlunoRouteImport } from './routes/aluno'
 import { Route as AlunoIndexRouteImport } from './routes/aluno.index'
+import { Route as AlunoAgendaRouteImport } from './routes/aluno.agenda'
+import { Route as AlunoAvaliacoesRouteImport } from './routes/aluno.avaliacoes'
 import { Route as AlunoAvatarRouteImport } from './routes/aluno.avatar'
 import { Route as AlunoCoachRouteImport } from './routes/aluno.coach'
 import { Route as AlunoEvolucaoRouteImport } from './routes/aluno.evolucao'
+import { Route as AlunoFinanceiroRouteImport } from './routes/aluno.financeiro'
+import { Route as AlunoFotosRouteImport } from './routes/aluno.fotos'
+import { Route as AlunoMateriaisRouteImport } from './routes/aluno.materiais'
+import { Route as AlunoMensagensRouteImport } from './routes/aluno.mensagens'
+import { Route as AlunoPerfilRouteImport } from './routes/aluno.perfil'
 import { Route as AlunoTimelineRouteImport } from './routes/aluno.timeline'
 import { Route as AlunoTreinosRouteImport } from './routes/aluno.treinos'
 
@@ -33,6 +40,16 @@ const AlunoIndexRoute = AlunoIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AlunoRoute,
 } as any)
+const AlunoAgendaRoute = AlunoAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAvaliacoesRoute = AlunoAvaliacoesRouteImport.update({
+  id: '/avaliacoes',
+  path: '/avaliacoes',
+  getParentRoute: () => AlunoRoute,
+} as any)
 const AlunoAvatarRoute = AlunoAvatarRouteImport.update({
   id: '/avatar',
   path: '/avatar',
@@ -46,6 +63,31 @@ const AlunoCoachRoute = AlunoCoachRouteImport.update({
 const AlunoEvolucaoRoute = AlunoEvolucaoRouteImport.update({
   id: '/evolucao',
   path: '/evolucao',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoFinanceiroRoute = AlunoFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoFotosRoute = AlunoFotosRouteImport.update({
+  id: '/fotos',
+  path: '/fotos',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoMateriaisRoute = AlunoMateriaisRouteImport.update({
+  id: '/materiais',
+  path: '/materiais',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoMensagensRoute = AlunoMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoPerfilRoute = AlunoPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
   getParentRoute: () => AlunoRoute,
 } as any)
 const AlunoTimelineRoute = AlunoTimelineRouteImport.update({
@@ -62,18 +104,32 @@ const AlunoTreinosRoute = AlunoTreinosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aluno': typeof AlunoRouteWithChildren
+  '/aluno/agenda': typeof AlunoAgendaRoute
+  '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
   '/aluno/coach': typeof AlunoCoachRoute
   '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/financeiro': typeof AlunoFinanceiroRoute
+  '/aluno/fotos': typeof AlunoFotosRoute
+  '/aluno/materiais': typeof AlunoMateriaisRoute
+  '/aluno/mensagens': typeof AlunoMensagensRoute
+  '/aluno/perfil': typeof AlunoPerfilRoute
   '/aluno/timeline': typeof AlunoTimelineRoute
   '/aluno/treinos': typeof AlunoTreinosRoute
   '/aluno/': typeof AlunoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aluno/agenda': typeof AlunoAgendaRoute
+  '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
   '/aluno/coach': typeof AlunoCoachRoute
   '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/financeiro': typeof AlunoFinanceiroRoute
+  '/aluno/fotos': typeof AlunoFotosRoute
+  '/aluno/materiais': typeof AlunoMateriaisRoute
+  '/aluno/mensagens': typeof AlunoMensagensRoute
+  '/aluno/perfil': typeof AlunoPerfilRoute
   '/aluno/timeline': typeof AlunoTimelineRoute
   '/aluno/treinos': typeof AlunoTreinosRoute
   '/aluno': typeof AlunoIndexRoute
@@ -82,9 +138,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aluno': typeof AlunoRouteWithChildren
+  '/aluno/agenda': typeof AlunoAgendaRoute
+  '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
   '/aluno/avatar': typeof AlunoAvatarRoute
   '/aluno/coach': typeof AlunoCoachRoute
   '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/financeiro': typeof AlunoFinanceiroRoute
+  '/aluno/fotos': typeof AlunoFotosRoute
+  '/aluno/materiais': typeof AlunoMateriaisRoute
+  '/aluno/mensagens': typeof AlunoMensagensRoute
+  '/aluno/perfil': typeof AlunoPerfilRoute
   '/aluno/timeline': typeof AlunoTimelineRoute
   '/aluno/treinos': typeof AlunoTreinosRoute
   '/aluno/': typeof AlunoIndexRoute
@@ -94,18 +157,32 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aluno'
+    | '/aluno/agenda'
+    | '/aluno/avaliacoes'
     | '/aluno/avatar'
     | '/aluno/coach'
     | '/aluno/evolucao'
+    | '/aluno/financeiro'
+    | '/aluno/fotos'
+    | '/aluno/materiais'
+    | '/aluno/mensagens'
+    | '/aluno/perfil'
     | '/aluno/timeline'
     | '/aluno/treinos'
     | '/aluno/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aluno/agenda'
+    | '/aluno/avaliacoes'
     | '/aluno/avatar'
     | '/aluno/coach'
     | '/aluno/evolucao'
+    | '/aluno/financeiro'
+    | '/aluno/fotos'
+    | '/aluno/materiais'
+    | '/aluno/mensagens'
+    | '/aluno/perfil'
     | '/aluno/timeline'
     | '/aluno/treinos'
     | '/aluno'
@@ -113,9 +190,16 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/aluno'
+    | '/aluno/agenda'
+    | '/aluno/avaliacoes'
     | '/aluno/avatar'
     | '/aluno/coach'
     | '/aluno/evolucao'
+    | '/aluno/financeiro'
+    | '/aluno/fotos'
+    | '/aluno/materiais'
+    | '/aluno/mensagens'
+    | '/aluno/perfil'
     | '/aluno/timeline'
     | '/aluno/treinos'
     | '/aluno/'
@@ -149,6 +233,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlunoIndexRouteImport
       parentRoute: typeof AlunoRoute
     }
+    '/aluno/agenda': {
+      id: '/aluno/agenda'
+      path: '/agenda'
+      fullPath: '/aluno/agenda'
+      preLoaderRoute: typeof AlunoAgendaRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/avaliacoes': {
+      id: '/aluno/avaliacoes'
+      path: '/avaliacoes'
+      fullPath: '/aluno/avaliacoes'
+      preLoaderRoute: typeof AlunoAvaliacoesRouteImport
+      parentRoute: typeof AlunoRoute
+    }
     '/aluno/avatar': {
       id: '/aluno/avatar'
       path: '/avatar'
@@ -170,6 +268,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlunoEvolucaoRouteImport
       parentRoute: typeof AlunoRoute
     }
+    '/aluno/financeiro': {
+      id: '/aluno/financeiro'
+      path: '/financeiro'
+      fullPath: '/aluno/financeiro'
+      preLoaderRoute: typeof AlunoFinanceiroRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/fotos': {
+      id: '/aluno/fotos'
+      path: '/fotos'
+      fullPath: '/aluno/fotos'
+      preLoaderRoute: typeof AlunoFotosRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/materiais': {
+      id: '/aluno/materiais'
+      path: '/materiais'
+      fullPath: '/aluno/materiais'
+      preLoaderRoute: typeof AlunoMateriaisRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/mensagens': {
+      id: '/aluno/mensagens'
+      path: '/mensagens'
+      fullPath: '/aluno/mensagens'
+      preLoaderRoute: typeof AlunoMensagensRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/perfil': {
+      id: '/aluno/perfil'
+      path: '/perfil'
+      fullPath: '/aluno/perfil'
+      preLoaderRoute: typeof AlunoPerfilRouteImport
+      parentRoute: typeof AlunoRoute
+    }
     '/aluno/timeline': {
       id: '/aluno/timeline'
       path: '/timeline'
@@ -188,18 +321,32 @@ declare module '@tanstack/react-router' {
 }
 
 interface AlunoRouteChildren {
+  AlunoAgendaRoute: typeof AlunoAgendaRoute
+  AlunoAvaliacoesRoute: typeof AlunoAvaliacoesRoute
   AlunoAvatarRoute: typeof AlunoAvatarRoute
   AlunoCoachRoute: typeof AlunoCoachRoute
   AlunoEvolucaoRoute: typeof AlunoEvolucaoRoute
+  AlunoFinanceiroRoute: typeof AlunoFinanceiroRoute
+  AlunoFotosRoute: typeof AlunoFotosRoute
+  AlunoMateriaisRoute: typeof AlunoMateriaisRoute
+  AlunoMensagensRoute: typeof AlunoMensagensRoute
+  AlunoPerfilRoute: typeof AlunoPerfilRoute
   AlunoTimelineRoute: typeof AlunoTimelineRoute
   AlunoTreinosRoute: typeof AlunoTreinosRoute
   AlunoIndexRoute: typeof AlunoIndexRoute
 }
 
 const AlunoRouteChildren: AlunoRouteChildren = {
+  AlunoAgendaRoute: AlunoAgendaRoute,
+  AlunoAvaliacoesRoute: AlunoAvaliacoesRoute,
   AlunoAvatarRoute: AlunoAvatarRoute,
   AlunoCoachRoute: AlunoCoachRoute,
   AlunoEvolucaoRoute: AlunoEvolucaoRoute,
+  AlunoFinanceiroRoute: AlunoFinanceiroRoute,
+  AlunoFotosRoute: AlunoFotosRoute,
+  AlunoMateriaisRoute: AlunoMateriaisRoute,
+  AlunoMensagensRoute: AlunoMensagensRoute,
+  AlunoPerfilRoute: AlunoPerfilRoute,
   AlunoTimelineRoute: AlunoTimelineRoute,
   AlunoTreinosRoute: AlunoTreinosRoute,
   AlunoIndexRoute: AlunoIndexRoute,
