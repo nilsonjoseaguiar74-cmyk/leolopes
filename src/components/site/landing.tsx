@@ -14,7 +14,8 @@ import {
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { SiteFooter, SiteHeader } from "@/components/site/chrome";
 import heroImg from "@/assets/hero-trail.jpg";
-import portrait from "@/assets/leonardo-portrait.jpg";
+import portraitAsset from "@/assets/leonardo-run-portrait.jpg.asset.json";
+import raceAsset from "@/assets/leonardo-race.jpg.asset.json";
 import {
   beforeAfter,
   brandWords,
