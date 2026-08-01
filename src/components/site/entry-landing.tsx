@@ -270,7 +270,7 @@ export function EntryLanding() {
 
       {/* ---------- Logo + copy + single CTA ---------- */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
-        <div className="mix-blend-screen">
+        <div>
           <motion.div
             className="will-change-transform"
             style={{ x: logoX, y: logoY }}
