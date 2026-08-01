@@ -693,13 +693,6 @@ function Contact() {
             >
               {sent ? "Aberto no WhatsApp" : "Enviar e falar no WhatsApp"}
             </a>
-            <button
-              type="submit"
-              hidden
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
-            >
-              {sent ? "Recebido — retorno em breve" : "Enviar e falar no WhatsApp"}
-            </button>
             <p className="text-center text-xs text-muted-foreground">
               Protótipo — nenhum dado é enviado.
             </p>
