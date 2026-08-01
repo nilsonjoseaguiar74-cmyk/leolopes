@@ -544,7 +544,7 @@ function Testimonials() {
     const t = setInterval(() => setI((v) => (v + 1) % testimonials.length), 6000);
     return () => clearInterval(t);
   }, []);
-  const t = testimonials[i];
+  const t = testimonials[i] ?? testimonials[0]!;
 
   return (
     <div className="border-y border-border bg-surface/40">
