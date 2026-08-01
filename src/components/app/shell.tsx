@@ -64,7 +64,7 @@ export function AppShell({
           key={pathname}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="px-4 py-6 pb-24 lg:px-8 lg:py-10 lg:pb-16"
         >
           {children}
