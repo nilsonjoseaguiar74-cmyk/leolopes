@@ -10,33 +10,322 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AlunoRouteImport } from './routes/aluno'
+import { Route as EmpresasRouteImport } from './routes/empresas'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminSplatRouteImport } from './routes/admin.$'
+import { Route as AdminBibliotecaRouteImport } from './routes/admin.biblioteca'
+import { Route as AdminCmsRouteImport } from './routes/admin.cms'
+import { Route as AdminCrmRouteImport } from './routes/admin.crm'
+import { Route as AlunoIndexRouteImport } from './routes/aluno.index'
+import { Route as AlunoAgendaRouteImport } from './routes/aluno.agenda'
+import { Route as AlunoAvaliacoesRouteImport } from './routes/aluno.avaliacoes'
+import { Route as AlunoAvatarRouteImport } from './routes/aluno.avatar'
+import { Route as AlunoCoachRouteImport } from './routes/aluno.coach'
+import { Route as AlunoEvolucaoRouteImport } from './routes/aluno.evolucao'
+import { Route as AlunoFinanceiroRouteImport } from './routes/aluno.financeiro'
+import { Route as AlunoFotosRouteImport } from './routes/aluno.fotos'
+import { Route as AlunoMateriaisRouteImport } from './routes/aluno.materiais'
+import { Route as AlunoMensagensRouteImport } from './routes/aluno.mensagens'
+import { Route as AlunoPerfilRouteImport } from './routes/aluno.perfil'
+import { Route as AlunoTimelineRouteImport } from './routes/aluno.timeline'
+import { Route as AlunoTreinosRouteImport } from './routes/aluno.treinos'
+import { Route as EmpresasIndexRouteImport } from './routes/empresas.index'
+import { Route as EmpresasSplatRouteImport } from './routes/empresas.$'
+import { Route as EmpresasFuncionariosRouteImport } from './routes/empresas.funcionarios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlunoRoute = AlunoRouteImport.update({
+  id: '/aluno',
+  path: '/aluno',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmpresasRoute = EmpresasRouteImport.update({
+  id: '/empresas',
+  path: '/empresas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSplatRoute = AdminSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBibliotecaRoute = AdminBibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCmsRoute = AdminCmsRouteImport.update({
+  id: '/cms',
+  path: '/cms',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCrmRoute = AdminCrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AlunoIndexRoute = AlunoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAgendaRoute = AlunoAgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAvaliacoesRoute = AlunoAvaliacoesRouteImport.update({
+  id: '/avaliacoes',
+  path: '/avaliacoes',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAvatarRoute = AlunoAvatarRouteImport.update({
+  id: '/avatar',
+  path: '/avatar',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoCoachRoute = AlunoCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoEvolucaoRoute = AlunoEvolucaoRouteImport.update({
+  id: '/evolucao',
+  path: '/evolucao',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoFinanceiroRoute = AlunoFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoFotosRoute = AlunoFotosRouteImport.update({
+  id: '/fotos',
+  path: '/fotos',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoMateriaisRoute = AlunoMateriaisRouteImport.update({
+  id: '/materiais',
+  path: '/materiais',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoMensagensRoute = AlunoMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoPerfilRoute = AlunoPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoTimelineRoute = AlunoTimelineRouteImport.update({
+  id: '/timeline',
+  path: '/timeline',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoTreinosRoute = AlunoTreinosRouteImport.update({
+  id: '/treinos',
+  path: '/treinos',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const EmpresasIndexRoute = EmpresasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EmpresasRoute,
+} as any)
+const EmpresasSplatRoute = EmpresasSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => EmpresasRoute,
+} as any)
+const EmpresasFuncionariosRoute = EmpresasFuncionariosRouteImport.update({
+  id: '/funcionarios',
+  path: '/funcionarios',
+  getParentRoute: () => EmpresasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/aluno': typeof AlunoRouteWithChildren
+  '/empresas': typeof EmpresasRouteWithChildren
+  '/admin/$': typeof AdminSplatRoute
+  '/admin/biblioteca': typeof AdminBibliotecaRoute
+  '/admin/cms': typeof AdminCmsRoute
+  '/admin/crm': typeof AdminCrmRoute
+  '/aluno/agenda': typeof AlunoAgendaRoute
+  '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
+  '/aluno/avatar': typeof AlunoAvatarRoute
+  '/aluno/coach': typeof AlunoCoachRoute
+  '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/financeiro': typeof AlunoFinanceiroRoute
+  '/aluno/fotos': typeof AlunoFotosRoute
+  '/aluno/materiais': typeof AlunoMateriaisRoute
+  '/aluno/mensagens': typeof AlunoMensagensRoute
+  '/aluno/perfil': typeof AlunoPerfilRoute
+  '/aluno/timeline': typeof AlunoTimelineRoute
+  '/aluno/treinos': typeof AlunoTreinosRoute
+  '/empresas/$': typeof EmpresasSplatRoute
+  '/empresas/funcionarios': typeof EmpresasFuncionariosRoute
+  '/admin/': typeof AdminIndexRoute
+  '/aluno/': typeof AlunoIndexRoute
+  '/empresas/': typeof EmpresasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/$': typeof AdminSplatRoute
+  '/admin/biblioteca': typeof AdminBibliotecaRoute
+  '/admin/cms': typeof AdminCmsRoute
+  '/admin/crm': typeof AdminCrmRoute
+  '/aluno/agenda': typeof AlunoAgendaRoute
+  '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
+  '/aluno/avatar': typeof AlunoAvatarRoute
+  '/aluno/coach': typeof AlunoCoachRoute
+  '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/financeiro': typeof AlunoFinanceiroRoute
+  '/aluno/fotos': typeof AlunoFotosRoute
+  '/aluno/materiais': typeof AlunoMateriaisRoute
+  '/aluno/mensagens': typeof AlunoMensagensRoute
+  '/aluno/perfil': typeof AlunoPerfilRoute
+  '/aluno/timeline': typeof AlunoTimelineRoute
+  '/aluno/treinos': typeof AlunoTreinosRoute
+  '/empresas/$': typeof EmpresasSplatRoute
+  '/empresas/funcionarios': typeof EmpresasFuncionariosRoute
+  '/admin': typeof AdminIndexRoute
+  '/aluno': typeof AlunoIndexRoute
+  '/empresas': typeof EmpresasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/aluno': typeof AlunoRouteWithChildren
+  '/empresas': typeof EmpresasRouteWithChildren
+  '/admin/$': typeof AdminSplatRoute
+  '/admin/biblioteca': typeof AdminBibliotecaRoute
+  '/admin/cms': typeof AdminCmsRoute
+  '/admin/crm': typeof AdminCrmRoute
+  '/aluno/agenda': typeof AlunoAgendaRoute
+  '/aluno/avaliacoes': typeof AlunoAvaliacoesRoute
+  '/aluno/avatar': typeof AlunoAvatarRoute
+  '/aluno/coach': typeof AlunoCoachRoute
+  '/aluno/evolucao': typeof AlunoEvolucaoRoute
+  '/aluno/financeiro': typeof AlunoFinanceiroRoute
+  '/aluno/fotos': typeof AlunoFotosRoute
+  '/aluno/materiais': typeof AlunoMateriaisRoute
+  '/aluno/mensagens': typeof AlunoMensagensRoute
+  '/aluno/perfil': typeof AlunoPerfilRoute
+  '/aluno/timeline': typeof AlunoTimelineRoute
+  '/aluno/treinos': typeof AlunoTreinosRoute
+  '/empresas/$': typeof EmpresasSplatRoute
+  '/empresas/funcionarios': typeof EmpresasFuncionariosRoute
+  '/admin/': typeof AdminIndexRoute
+  '/aluno/': typeof AlunoIndexRoute
+  '/empresas/': typeof EmpresasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/aluno'
+    | '/empresas'
+    | '/admin/$'
+    | '/admin/biblioteca'
+    | '/admin/cms'
+    | '/admin/crm'
+    | '/aluno/agenda'
+    | '/aluno/avaliacoes'
+    | '/aluno/avatar'
+    | '/aluno/coach'
+    | '/aluno/evolucao'
+    | '/aluno/financeiro'
+    | '/aluno/fotos'
+    | '/aluno/materiais'
+    | '/aluno/mensagens'
+    | '/aluno/perfil'
+    | '/aluno/timeline'
+    | '/aluno/treinos'
+    | '/empresas/$'
+    | '/empresas/funcionarios'
+    | '/admin/'
+    | '/aluno/'
+    | '/empresas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin/$'
+    | '/admin/biblioteca'
+    | '/admin/cms'
+    | '/admin/crm'
+    | '/aluno/agenda'
+    | '/aluno/avaliacoes'
+    | '/aluno/avatar'
+    | '/aluno/coach'
+    | '/aluno/evolucao'
+    | '/aluno/financeiro'
+    | '/aluno/fotos'
+    | '/aluno/materiais'
+    | '/aluno/mensagens'
+    | '/aluno/perfil'
+    | '/aluno/timeline'
+    | '/aluno/treinos'
+    | '/empresas/$'
+    | '/empresas/funcionarios'
+    | '/admin'
+    | '/aluno'
+    | '/empresas'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/aluno'
+    | '/empresas'
+    | '/admin/$'
+    | '/admin/biblioteca'
+    | '/admin/cms'
+    | '/admin/crm'
+    | '/aluno/agenda'
+    | '/aluno/avaliacoes'
+    | '/aluno/avatar'
+    | '/aluno/coach'
+    | '/aluno/evolucao'
+    | '/aluno/financeiro'
+    | '/aluno/fotos'
+    | '/aluno/materiais'
+    | '/aluno/mensagens'
+    | '/aluno/perfil'
+    | '/aluno/timeline'
+    | '/aluno/treinos'
+    | '/empresas/$'
+    | '/empresas/funcionarios'
+    | '/admin/'
+    | '/aluno/'
+    | '/empresas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AlunoRoute: typeof AlunoRouteWithChildren
+  EmpresasRoute: typeof EmpresasRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +337,251 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aluno': {
+      id: '/aluno'
+      path: '/aluno'
+      fullPath: '/aluno'
+      preLoaderRoute: typeof AlunoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/empresas': {
+      id: '/empresas'
+      path: '/empresas'
+      fullPath: '/empresas'
+      preLoaderRoute: typeof EmpresasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/$': {
+      id: '/admin/$'
+      path: '/$'
+      fullPath: '/admin/$'
+      preLoaderRoute: typeof AdminSplatRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/biblioteca': {
+      id: '/admin/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/admin/biblioteca'
+      preLoaderRoute: typeof AdminBibliotecaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cms': {
+      id: '/admin/cms'
+      path: '/cms'
+      fullPath: '/admin/cms'
+      preLoaderRoute: typeof AdminCmsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/crm': {
+      id: '/admin/crm'
+      path: '/crm'
+      fullPath: '/admin/crm'
+      preLoaderRoute: typeof AdminCrmRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/aluno/': {
+      id: '/aluno/'
+      path: '/'
+      fullPath: '/aluno/'
+      preLoaderRoute: typeof AlunoIndexRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/agenda': {
+      id: '/aluno/agenda'
+      path: '/agenda'
+      fullPath: '/aluno/agenda'
+      preLoaderRoute: typeof AlunoAgendaRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/avaliacoes': {
+      id: '/aluno/avaliacoes'
+      path: '/avaliacoes'
+      fullPath: '/aluno/avaliacoes'
+      preLoaderRoute: typeof AlunoAvaliacoesRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/avatar': {
+      id: '/aluno/avatar'
+      path: '/avatar'
+      fullPath: '/aluno/avatar'
+      preLoaderRoute: typeof AlunoAvatarRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/coach': {
+      id: '/aluno/coach'
+      path: '/coach'
+      fullPath: '/aluno/coach'
+      preLoaderRoute: typeof AlunoCoachRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/evolucao': {
+      id: '/aluno/evolucao'
+      path: '/evolucao'
+      fullPath: '/aluno/evolucao'
+      preLoaderRoute: typeof AlunoEvolucaoRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/financeiro': {
+      id: '/aluno/financeiro'
+      path: '/financeiro'
+      fullPath: '/aluno/financeiro'
+      preLoaderRoute: typeof AlunoFinanceiroRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/fotos': {
+      id: '/aluno/fotos'
+      path: '/fotos'
+      fullPath: '/aluno/fotos'
+      preLoaderRoute: typeof AlunoFotosRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/materiais': {
+      id: '/aluno/materiais'
+      path: '/materiais'
+      fullPath: '/aluno/materiais'
+      preLoaderRoute: typeof AlunoMateriaisRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/mensagens': {
+      id: '/aluno/mensagens'
+      path: '/mensagens'
+      fullPath: '/aluno/mensagens'
+      preLoaderRoute: typeof AlunoMensagensRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/perfil': {
+      id: '/aluno/perfil'
+      path: '/perfil'
+      fullPath: '/aluno/perfil'
+      preLoaderRoute: typeof AlunoPerfilRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/timeline': {
+      id: '/aluno/timeline'
+      path: '/timeline'
+      fullPath: '/aluno/timeline'
+      preLoaderRoute: typeof AlunoTimelineRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/aluno/treinos': {
+      id: '/aluno/treinos'
+      path: '/treinos'
+      fullPath: '/aluno/treinos'
+      preLoaderRoute: typeof AlunoTreinosRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/empresas/': {
+      id: '/empresas/'
+      path: '/'
+      fullPath: '/empresas/'
+      preLoaderRoute: typeof EmpresasIndexRouteImport
+      parentRoute: typeof EmpresasRoute
+    }
+    '/empresas/$': {
+      id: '/empresas/$'
+      path: '/$'
+      fullPath: '/empresas/$'
+      preLoaderRoute: typeof EmpresasSplatRouteImport
+      parentRoute: typeof EmpresasRoute
+    }
+    '/empresas/funcionarios': {
+      id: '/empresas/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/empresas/funcionarios'
+      preLoaderRoute: typeof EmpresasFuncionariosRouteImport
+      parentRoute: typeof EmpresasRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminSplatRoute: typeof AdminSplatRoute
+  AdminBibliotecaRoute: typeof AdminBibliotecaRoute
+  AdminCmsRoute: typeof AdminCmsRoute
+  AdminCrmRoute: typeof AdminCrmRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminSplatRoute: AdminSplatRoute,
+  AdminBibliotecaRoute: AdminBibliotecaRoute,
+  AdminCmsRoute: AdminCmsRoute,
+  AdminCrmRoute: AdminCrmRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface AlunoRouteChildren {
+  AlunoAgendaRoute: typeof AlunoAgendaRoute
+  AlunoAvaliacoesRoute: typeof AlunoAvaliacoesRoute
+  AlunoAvatarRoute: typeof AlunoAvatarRoute
+  AlunoCoachRoute: typeof AlunoCoachRoute
+  AlunoEvolucaoRoute: typeof AlunoEvolucaoRoute
+  AlunoFinanceiroRoute: typeof AlunoFinanceiroRoute
+  AlunoFotosRoute: typeof AlunoFotosRoute
+  AlunoMateriaisRoute: typeof AlunoMateriaisRoute
+  AlunoMensagensRoute: typeof AlunoMensagensRoute
+  AlunoPerfilRoute: typeof AlunoPerfilRoute
+  AlunoTimelineRoute: typeof AlunoTimelineRoute
+  AlunoTreinosRoute: typeof AlunoTreinosRoute
+  AlunoIndexRoute: typeof AlunoIndexRoute
+}
+
+const AlunoRouteChildren: AlunoRouteChildren = {
+  AlunoAgendaRoute: AlunoAgendaRoute,
+  AlunoAvaliacoesRoute: AlunoAvaliacoesRoute,
+  AlunoAvatarRoute: AlunoAvatarRoute,
+  AlunoCoachRoute: AlunoCoachRoute,
+  AlunoEvolucaoRoute: AlunoEvolucaoRoute,
+  AlunoFinanceiroRoute: AlunoFinanceiroRoute,
+  AlunoFotosRoute: AlunoFotosRoute,
+  AlunoMateriaisRoute: AlunoMateriaisRoute,
+  AlunoMensagensRoute: AlunoMensagensRoute,
+  AlunoPerfilRoute: AlunoPerfilRoute,
+  AlunoTimelineRoute: AlunoTimelineRoute,
+  AlunoTreinosRoute: AlunoTreinosRoute,
+  AlunoIndexRoute: AlunoIndexRoute,
+}
+
+const AlunoRouteWithChildren = AlunoRoute._addFileChildren(AlunoRouteChildren)
+
+interface EmpresasRouteChildren {
+  EmpresasSplatRoute: typeof EmpresasSplatRoute
+  EmpresasFuncionariosRoute: typeof EmpresasFuncionariosRoute
+  EmpresasIndexRoute: typeof EmpresasIndexRoute
+}
+
+const EmpresasRouteChildren: EmpresasRouteChildren = {
+  EmpresasSplatRoute: EmpresasSplatRoute,
+  EmpresasFuncionariosRoute: EmpresasFuncionariosRoute,
+  EmpresasIndexRoute: EmpresasIndexRoute,
+}
+
+const EmpresasRouteWithChildren = EmpresasRoute._addFileChildren(
+  EmpresasRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AlunoRoute: AlunoRouteWithChildren,
+  EmpresasRoute: EmpresasRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
