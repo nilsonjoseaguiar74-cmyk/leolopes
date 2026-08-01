@@ -390,8 +390,6 @@ export function EntryLanding() {
               ))}
             </motion.nav>
           )}
-        </motion.nav>
-          )}
         </AnimatePresence>
       </div>
 
