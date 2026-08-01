@@ -25,7 +25,7 @@ function Treinos() {
     setDone((d) => (d.includes(n) ? d.filter((x) => x !== n) : [...d, n]));
 
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6 sm:gap-8">
       <PageHeader
         eyebrow="Treinos"
         title="Treino A · Inferiores força"

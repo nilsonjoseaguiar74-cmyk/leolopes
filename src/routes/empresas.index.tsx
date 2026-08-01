@@ -11,7 +11,7 @@ export const Route = createFileRoute("/empresas/")({
 
 function EmpresasDashboard() {
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6 sm:gap-8">
       <PageHeader
         eyebrow="Grupo Norte · Programa 2025"
         title="Saúde como indicador de negócio"
@@ -23,7 +23,7 @@ function EmpresasDashboard() {
         }
       />
 
-      <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {b2bKpis.map((k) => (
           <StaggerItem key={k.label}>
             <StatCard label={k.label} value={k.value} />

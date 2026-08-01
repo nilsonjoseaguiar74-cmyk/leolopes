@@ -29,7 +29,7 @@ function Crm() {
   }
 
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6 sm:gap-8">
       <PageHeader
         eyebrow="CRM"
         title="Pipeline de relacionamento"
