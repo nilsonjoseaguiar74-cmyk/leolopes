@@ -176,9 +176,7 @@ function Contour({
       aria-hidden
       style={{ x: tx, y: ty, filter: `blur(${(1 - t) * 2.2}px)` }}
       animate={
-        reduced
-          ? undefined
-          : { translateZ: 0, scaleY: [1, 1.03 + t * 0.02, 1], opacity: [0.9, 1, 0.9] }
+        reduced ? false : { scaleY: [1, 1.03 + t * 0.02, 1], opacity: [0.9, 1, 0.9] }
       }
       transition={{ duration: 9 + index * 1.1, repeat: Infinity, ease: "easeInOut" }}
     >
@@ -248,16 +246,9 @@ function TrailPath({ reduced }: { reduced: boolean }) {
         transition={{ duration: 3, delay: 1, ease: EASE }}
       />
       {!reduced && (
-        <motion.circle
-          r="4"
-          fill="var(--primary)"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 7, delay: 2, repeat: Infinity, ease: "linear" }}
-          style={{ offsetPath: `path("${d}")` } as React.CSSProperties}
-        >
+        <circle r="4" fill="var(--primary)" opacity="0.9">
           <animateMotion dur="7s" begin="2s" repeatCount="indefinite" path={d} />
-        </motion.circle>
+        </circle>
       )}
     </svg>
   );
@@ -351,7 +342,7 @@ export function EntryLanding() {
             background:
               "radial-gradient(circle, color-mix(in oklab, var(--primary) 22%, transparent), transparent 66%)",
           }}
-          animate={reduced ? undefined : { scale: [1, 1.12, 1], opacity: [0.55, 0.8, 0.55] }}
+          animate={reduced ? false : { scale: [1, 1.12, 1], opacity: [0.55, 0.8, 0.55] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
 
@@ -434,7 +425,7 @@ export function EntryLanding() {
             width={880}
             height={660}
             className="w-[80vw] max-w-[520px] select-none sm:w-[50vw]"
-            animate={reduced ? undefined : { y: [0, -10, 0] }}
+            animate={reduced ? false : { y: [0, -10, 0] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
