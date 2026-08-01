@@ -168,6 +168,7 @@ export function SiteFooter() {
         <div className="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Leonardo Lopes. Todos os direitos reservados.</p>
           <p className="font-mono">Leonardo OS v1.0 · protótipo navegável</p>
+          <p>DEVs: Rodrigo - Rafaela - Vitor</p>
         </div>
       </div>
     </footer>
