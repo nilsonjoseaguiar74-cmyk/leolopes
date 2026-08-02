@@ -183,6 +183,92 @@ function Dust({ count = 22 }: { count?: number }) {
   );
 }
 
+/** Ascent trail: a drawn route with a light travelling along it. */
+function AscentTrail({ x, reduced }: { x: MotionValue<number>; reduced: boolean }) {
+  const tx = useTransform(x, [-1, 1], [34, -34]);
+  const path =
+    "M-40,600 C220,560 320,470 470,486 C620,502 640,404 800,382 C930,364 1010,300 1160,282 C1300,266 1380,236 1480,214";
+  return (
+    <motion.svg
+      viewBox="0 0 1440 620"
+      preserveAspectRatio="none"
+      className="absolute inset-x-0 bottom-0 h-[74%] w-full will-change-transform"
+      aria-hidden
+      style={{ x: tx }}
+    >
+      <motion.path
+        d={path}
+        fill="none"
+        stroke="var(--primary)"
+        strokeWidth="1.6"
+        strokeDasharray="6 9"
+        opacity={0.55}
+        vectorEffect="non-scaling-stroke"
+        initial={reduced ? false : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 2.6, delay: 0.5, ease: EASE }}
+      />
+      {!reduced && (
+        <>
+          <circle r="4" fill="var(--primary)">
+            <animateMotion dur="9s" repeatCount="indefinite" path={path} />
+          </circle>
+          <circle r="12" fill="var(--primary)" opacity="0.18">
+            <animateMotion dur="9s" repeatCount="indefinite" path={path} />
+          </circle>
+        </>
+      )}
+    </motion.svg>
+  );
+}
+
+/** Soft light ring that trails the pointer. */
+function CursorHalo() {
+  const px = useMotionValue(-500);
+  const py = useMotionValue(-500);
+  const sx = useSpring(px, { stiffness: 220, damping: 26, mass: 0.4 });
+  const sy = useSpring(py, { stiffness: 220, damping: 26, mass: 0.4 });
+
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      px.set(e.clientX);
+      py.set(e.clientY);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [px, py]);
+
+  return (
+    <motion.div
+      aria-hidden
+      className="pointer-events-none absolute z-30 hidden size-24 rounded-full border border-primary/25 md:block"
+      style={{
+        left: sx,
+        top: sy,
+        x: "-50%",
+        y: "-50%",
+        background:
+          "radial-gradient(circle, color-mix(in oklab, var(--primary) 12%, transparent), transparent 70%)",
+      }}
+    />
+  );
+}
+
+/** Small altitude/telemetry readout in the scene corners. */
+function Telemetry({ label, value, className }: { label: string; value: string; className: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 2.4, duration: 1, ease: EASE }}
+      className={`absolute z-20 hidden sm:block ${className}`}
+    >
+      <p className="text-[9px] tracking-[0.28em] text-muted-foreground uppercase">{label}</p>
+      <p className="mt-1 font-mono text-xs text-foreground/70">{value}</p>
+    </motion.div>
+  );
+}
+
 export function EntryLanding() {
   const navigate = useNavigate();
   const reduced = usePrefersReducedMotion();
