@@ -344,10 +344,6 @@ export function EntryLanding() {
 
       {!reduced && !leaving && <CursorHalo />}
 
-      <Telemetry label="Altitude" value="1 340 m" className="left-6 top-6" />
-      <Telemetry label="Cadência" value="182 spm" className="right-6 top-6" />
-      <Telemetry label="Ciclo" value="Base · Semana 01" className="left-6 bottom-12" />
-      <Telemetry label="Protocolo" value="Leonardo OS v1.0" className="right-6 bottom-12" />
 
       {/* ---------- Logo + copy + single CTA ---------- */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
