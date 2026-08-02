@@ -254,20 +254,6 @@ function CursorHalo() {
   );
 }
 
-/** Small altitude/telemetry readout in the scene corners. */
-function Telemetry({ label, value, className }: { label: string; value: string; className: string }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2.4, duration: 1, ease: EASE }}
-      className={`absolute z-20 hidden sm:block ${className}`}
-    >
-      <p className="text-[9px] tracking-[0.28em] text-muted-foreground uppercase">{label}</p>
-      <p className="mt-1 font-mono text-xs text-foreground/70">{value}</p>
-    </motion.div>
-  );
-}
 
 export function EntryLanding() {
   const navigate = useNavigate();
@@ -358,10 +344,6 @@ export function EntryLanding() {
 
       {!reduced && !leaving && <CursorHalo />}
 
-      <Telemetry label="Altitude" value="1 340 m" className="left-6 top-6" />
-      <Telemetry label="Cadência" value="182 spm" className="right-6 top-6" />
-      <Telemetry label="Ciclo" value="Base · Semana 01" className="left-6 bottom-12" />
-      <Telemetry label="Protocolo" value="Leonardo OS v1.0" className="right-6 bottom-12" />
 
       {/* ---------- Logo + copy + single CTA ---------- */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
@@ -388,7 +370,7 @@ export function EntryLanding() {
               alt="Logotipo Leonardo Lopes"
               width={1200}
               height={1119}
-              className="w-[72vw] max-w-[460px] select-none sm:w-[42vw]"
+              className="w-[52vw] max-w-[300px] select-none sm:w-[28vw]"
               animate={reduced ? { y: 0 } : { y: [0, -10, 0] }}
               transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -402,7 +384,7 @@ export function EntryLanding() {
           initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 1.5, duration: 1.1, ease: EASE }}
-          className="mt-2 max-w-[22ch] text-balance text-lg font-medium tracking-tight text-foreground/90 sm:text-2xl"
+          className="mt-1 max-w-[22ch] text-balance text-base font-medium tracking-tight text-foreground/90 sm:text-lg"
         >
           O próximo passo começa aqui.
         </motion.p>

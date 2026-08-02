@@ -6,6 +6,8 @@ import {
   ArrowUpRight,
   Activity,
   Check,
+  ChevronLeft,
+  ChevronRight,
   MessageCircle,
   Quote,
   Sparkles,
@@ -13,7 +15,7 @@ import {
 
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { SiteFooter, SiteHeader } from "@/components/site/chrome";
-import heroAsset from "@/assets/leonardo-hero.jpg.asset.json";
+import heroAsset from "@/assets/leonardo-mono-hero.jpg.asset.json";
 import portraitAsset from "@/assets/leonardo-run-portrait.jpg.asset.json";
 import raceAsset from "@/assets/leonardo-race.jpg.asset.json";
 import {
@@ -100,12 +102,13 @@ function Hero() {
       <motion.img
         src={heroAsset.url}
         alt="Leonardo Lopes correndo em prova, com camisa da assessoria"
-        width={1600}
-        height={1008}
+        width={1456}
+        height={1943}
         style={{ y, scale }}
-        className="absolute inset-0 size-full object-cover object-[50%_22%] opacity-60 saturate-[0.9]"
+        className="absolute inset-0 size-full object-cover object-[50%_18%] opacity-50 grayscale"
       />
       <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
+      <div className="absolute inset-x-0 top-0 h-56 bg-[linear-gradient(to_bottom,var(--background)_12%,color-mix(in_oklab,var(--background)_70%,transparent)_55%,transparent)]" />
       <div className="grid-lines absolute inset-0 opacity-40" />
 
       <motion.div
@@ -188,30 +191,88 @@ function WordMarquee() {
   );
 }
 
+/** Cards de mídia em carrossel — fácil de expandir: basta adicionar itens aqui. */
+const aboutGallery: { src: string; alt: string; caption: string }[] = [
+  {
+    src: portraitAsset.url,
+    alt: "Leonardo Lopes correndo em prova de rua",
+    caption: "Prova de rua · Belo Horizonte",
+  },
+  {
+    src: raceAsset.url,
+    alt: "Leonardo Lopes ao final de uma corrida, com medalha de participação",
+    caption: "Chegada · Medalha de participação",
+  },
+];
+
+function AboutGallery() {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const scrollBy = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * (el.clientWidth * 0.6), behavior: "smooth" });
+  };
+
+  return (
+    <div className="relative">
+      <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-3xl" />
+      <div
+        ref={trackRef}
+        className="no-scrollbar relative flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"
+      >
+        {aboutGallery.map((item) => (
+          <motion.figure
+            key={item.src}
+            whileHover={{ y: -6 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="group relative w-[74%] shrink-0 snap-start overflow-hidden rounded-2xl border border-border elevated sm:w-[48%]"
+          >
+            <img
+              src={item.src}
+              alt={item.alt}
+              loading="lazy"
+              className="aspect-[3/4] w-full object-cover grayscale transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:grayscale-0"
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[linear-gradient(to_top,var(--background),transparent)] p-4 pt-12">
+              <figcaption className="text-xs text-muted-foreground opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                {item.caption}
+              </figcaption>
+            </div>
+          </motion.figure>
+        ))}
+      </div>
+
+      {aboutGallery.length > 2 && (
+        <div className="mt-4 flex gap-2">
+          <button
+            type="button"
+            aria-label="Imagem anterior"
+            onClick={() => scrollBy(-1)}
+            className="inline-flex size-9 items-center justify-center rounded-full border border-border-strong bg-background/50 backdrop-blur transition-colors hover:bg-secondary"
+          >
+            <ChevronLeft className="size-4" />
+          </button>
+          <button
+            type="button"
+            aria-label="Próxima imagem"
+            onClick={() => scrollBy(1)}
+            className="inline-flex size-9 items-center justify-center rounded-full border border-border-strong bg-background/50 backdrop-blur transition-colors hover:bg-secondary"
+          >
+            <ChevronRight className="size-4" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function About() {
   return (
     <section id="sobre" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
         <Reveal>
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-3xl" />
-            <img
-              src={portraitAsset.url}
-              alt="Leonardo Lopes correndo em prova de rua"
-              width={753}
-              height={1443}
-              loading="lazy"
-              className="relative w-full rounded-2xl border border-border object-cover elevated"
-            />
-            <img
-              src={raceAsset.url}
-              alt="Leonardo Lopes ao final de uma corrida, com medalha de participação"
-              width={1170}
-              height={1613}
-              loading="lazy"
-              className="absolute -bottom-8 -right-4 hidden w-[38%] rounded-xl border border-border-strong object-cover elevated sm:block"
-            />
-          </div>
+          <AboutGallery />
         </Reveal>
         <div>
           <Reveal>
