@@ -221,3 +221,11 @@
     transform: translateX(-50%);
   }
 }
+
+/* Escala global reduzida (~15%) com compensação de tipografia para preservar legibilidade. */
+@media (min-width: 640px) {
+  html {
+    zoom: 0.85;
+    font-size: 18px;
+  }
+}
