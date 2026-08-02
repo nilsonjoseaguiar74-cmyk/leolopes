@@ -356,9 +356,26 @@ export function EntryLanding() {
         </svg>
       </motion.div>
 
+      {!reduced && !leaving && <CursorHalo />}
+
+      <Telemetry label="Altitude" value="1 340 m" className="left-6 top-6" />
+      <Telemetry label="Cadência" value="182 spm" className="right-6 top-6" />
+      <Telemetry label="Ciclo" value="Base · Semana 01" className="left-6 bottom-12" />
+      <Telemetry label="Protocolo" value="Leonardo OS v1.0" className="right-6 bottom-12" />
+
       {/* ---------- Logo + copy + single CTA ---------- */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
-        <div>
+        <div className="relative">
+          <motion.div
+            aria-hidden
+            className="absolute left-1/2 top-1/2 -z-10 size-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 18%, transparent), transparent 68%)",
+            }}
+            animate={reduced ? { opacity: 0.5 } : { opacity: [0.35, 0.7, 0.35], scale: [0.95, 1.05, 0.95] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
           <motion.div
             className="will-change-transform"
             style={{ x: logoX, y: logoY }}
@@ -366,15 +383,19 @@ export function EntryLanding() {
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             transition={{ duration: 2.1, ease: EASE }}
           >
-            <img
+            <motion.img
               src={logoGlow.url}
               alt="Logotipo Leonardo Lopes"
-              width={880}
-              height={660}
-              className="w-[80vw] max-w-[560px] select-none sm:w-[54vw]"
+              width={1200}
+              height={1119}
+              className="w-[72vw] max-w-[460px] select-none sm:w-[42vw]"
+              animate={reduced ? { y: 0 } : { y: [0, -10, 0] }}
+              transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             />
           </motion.div>
         </div>
+
+
 
 
         <motion.p
