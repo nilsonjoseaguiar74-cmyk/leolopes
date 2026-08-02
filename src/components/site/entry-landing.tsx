@@ -9,7 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import logoGlow from "@/assets/logo-leonardo-mark.png.asset.json";
+import logoGlow from "@/assets/logo-leonardo-shield-light.png.asset.json";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -183,6 +183,92 @@ function Dust({ count = 22 }: { count?: number }) {
   );
 }
 
+/** Ascent trail: a drawn route with a light travelling along it. */
+function AscentTrail({ x, reduced }: { x: MotionValue<number>; reduced: boolean }) {
+  const tx = useTransform(x, [-1, 1], [34, -34]);
+  const path =
+    "M-40,600 C220,560 320,470 470,486 C620,502 640,404 800,382 C930,364 1010,300 1160,282 C1300,266 1380,236 1480,214";
+  return (
+    <motion.svg
+      viewBox="0 0 1440 620"
+      preserveAspectRatio="none"
+      className="absolute inset-x-0 bottom-0 h-[74%] w-full will-change-transform"
+      aria-hidden
+      style={{ x: tx }}
+    >
+      <motion.path
+        d={path}
+        fill="none"
+        stroke="var(--primary)"
+        strokeWidth="1.6"
+        strokeDasharray="6 9"
+        opacity={0.55}
+        vectorEffect="non-scaling-stroke"
+        initial={reduced ? false : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 2.6, delay: 0.5, ease: EASE }}
+      />
+      {!reduced && (
+        <>
+          <circle r="4" fill="var(--primary)">
+            <animateMotion dur="9s" repeatCount="indefinite" path={path} />
+          </circle>
+          <circle r="12" fill="var(--primary)" opacity="0.18">
+            <animateMotion dur="9s" repeatCount="indefinite" path={path} />
+          </circle>
+        </>
+      )}
+    </motion.svg>
+  );
+}
+
+/** Soft light ring that trails the pointer. */
+function CursorHalo() {
+  const px = useMotionValue(-500);
+  const py = useMotionValue(-500);
+  const sx = useSpring(px, { stiffness: 220, damping: 26, mass: 0.4 });
+  const sy = useSpring(py, { stiffness: 220, damping: 26, mass: 0.4 });
+
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      px.set(e.clientX);
+      py.set(e.clientY);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [px, py]);
+
+  return (
+    <motion.div
+      aria-hidden
+      className="pointer-events-none absolute z-30 hidden size-24 rounded-full border border-primary/25 md:block"
+      style={{
+        left: sx,
+        top: sy,
+        x: "-50%",
+        y: "-50%",
+        background:
+          "radial-gradient(circle, color-mix(in oklab, var(--primary) 12%, transparent), transparent 70%)",
+      }}
+    />
+  );
+}
+
+/** Small altitude/telemetry readout in the scene corners. */
+function Telemetry({ label, value, className }: { label: string; value: string; className: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 2.4, duration: 1, ease: EASE }}
+      className={`absolute z-20 hidden sm:block ${className}`}
+    >
+      <p className="text-[9px] tracking-[0.28em] text-muted-foreground uppercase">{label}</p>
+      <p className="mt-1 font-mono text-xs text-foreground/70">{value}</p>
+    </motion.div>
+  );
+}
+
 export function EntryLanding() {
   const navigate = useNavigate();
   const reduced = usePrefersReducedMotion();
@@ -244,6 +330,8 @@ export function EntryLanding() {
           <Contour key={i} index={i} total={9} x={x} y={y} reduced={reduced} />
         ))}
 
+        <AscentTrail x={x} reduced={reduced} />
+
         <Ridge x={x} y={y} />
 
         {/* mist */}
@@ -268,9 +356,26 @@ export function EntryLanding() {
         </svg>
       </motion.div>
 
+      {!reduced && !leaving && <CursorHalo />}
+
+      <Telemetry label="Altitude" value="1 340 m" className="left-6 top-6" />
+      <Telemetry label="Cadência" value="182 spm" className="right-6 top-6" />
+      <Telemetry label="Ciclo" value="Base · Semana 01" className="left-6 bottom-12" />
+      <Telemetry label="Protocolo" value="Leonardo OS v1.0" className="right-6 bottom-12" />
+
       {/* ---------- Logo + copy + single CTA ---------- */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
-        <div>
+        <div className="relative">
+          <motion.div
+            aria-hidden
+            className="absolute left-1/2 top-1/2 -z-10 size-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--primary) 18%, transparent), transparent 68%)",
+            }}
+            animate={reduced ? { opacity: 0.5 } : { opacity: [0.35, 0.7, 0.35], scale: [0.95, 1.05, 0.95] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
           <motion.div
             className="will-change-transform"
             style={{ x: logoX, y: logoY }}
@@ -278,15 +383,19 @@ export function EntryLanding() {
             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
             transition={{ duration: 2.1, ease: EASE }}
           >
-            <img
+            <motion.img
               src={logoGlow.url}
               alt="Logotipo Leonardo Lopes"
-              width={880}
-              height={660}
-              className="w-[80vw] max-w-[560px] select-none sm:w-[54vw]"
+              width={1200}
+              height={1119}
+              className="w-[72vw] max-w-[460px] select-none sm:w-[42vw]"
+              animate={reduced ? { y: 0 } : { y: [0, -10, 0] }}
+              transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             />
           </motion.div>
         </div>
+
+
 
 
         <motion.p

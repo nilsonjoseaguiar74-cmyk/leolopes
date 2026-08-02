@@ -13,7 +13,7 @@ import {
 
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { SiteFooter, SiteHeader } from "@/components/site/chrome";
-import heroImg from "@/assets/hero-trail.jpg";
+import heroAsset from "@/assets/leonardo-hero.jpg.asset.json";
 import portraitAsset from "@/assets/leonardo-run-portrait.jpg.asset.json";
 import raceAsset from "@/assets/leonardo-race.jpg.asset.json";
 import {
@@ -98,12 +98,12 @@ function Hero() {
   return (
     <div ref={ref} className="relative min-h-[92svh] overflow-hidden">
       <motion.img
-        src={heroImg}
-        alt="Atleta correndo em trilha de montanha ao amanhecer"
+        src={heroAsset.url}
+        alt="Leonardo Lopes correndo em prova, com camisa da assessoria"
         width={1600}
         height={1008}
         style={{ y, scale }}
-        className="absolute inset-0 size-full object-cover object-center opacity-70"
+        className="absolute inset-0 size-full object-cover object-[50%_22%] opacity-60 saturate-[0.9]"
       />
       <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
       <div className="grid-lines absolute inset-0 opacity-40" />
