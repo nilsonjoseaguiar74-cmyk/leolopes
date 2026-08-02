@@ -102,12 +102,13 @@ function Hero() {
       <motion.img
         src={heroAsset.url}
         alt="Leonardo Lopes correndo em prova, com camisa da assessoria"
-        width={1600}
-        height={1008}
+        width={1456}
+        height={1943}
         style={{ y, scale }}
-        className="absolute inset-0 size-full object-cover object-[50%_22%] opacity-60 saturate-[0.9]"
+        className="absolute inset-0 size-full object-cover object-[50%_18%] opacity-50 grayscale"
       />
       <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
+      <div className="absolute inset-x-0 top-0 h-56 bg-[linear-gradient(to_bottom,var(--background)_12%,color-mix(in_oklab,var(--background)_70%,transparent)_55%,transparent)]" />
       <div className="grid-lines absolute inset-0 opacity-40" />
 
       <motion.div
