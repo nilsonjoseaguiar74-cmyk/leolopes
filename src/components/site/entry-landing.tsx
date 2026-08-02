@@ -9,7 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import logoGlow from "@/assets/logo-leonardo-mark.png.asset.json";
+import logoGlow from "@/assets/logo-leonardo-shield-light.png.asset.json";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
