@@ -1,0 +1,1488 @@
+
+
+=== PACKAGE.JSON ===
+{
+  "name": "tanstack_start_ts",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
+    "@radix-ui/react-aspect-ratio": "^1.1.8",
+    "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-checkbox": "^1.3.3",
+    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/react-context-menu": "^2.2.16",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-hover-card": "^1.1.15",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-menubar": "^1.1.16",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-progress": "^1.1.8",
+    "@radix-ui/react-radio-group": "^1.3.8",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-separator": "^1.1.8",
+    "@radix-ui/react-slider": "^1.3.6",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-switch": "^1.2.6",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@radix-ui/react-toggle": "^1.1.10",
+    "@radix-ui/react-toggle-group": "^1.1.11",
+    "@radix-ui/react-tooltip": "^1.2.8",
+    "@tailwindcss/vite": "^4.2.1",
+    "@tanstack/react-query": "^5.101.1",
+    "@tanstack/react-router": "^1.170.18",
+    "@tanstack/react-start": "^1.168.32",
+    "@tanstack/router-plugin": "^1.168.23",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.1.0",
+    "embla-carousel-react": "^8.6.0",
+    "input-otp": "^1.4.2",
+    "lucide-react": "^0.575.0",
+    "motion": "^12.43.0",
+    "react": "^19.2.0",
+    "react-day-picker": "^9.14.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.2",
+    "react-resizable-panels": "^4.6.5",
+    "recharts": "^2.15.4",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.1",
+    "tw-animate-css": "^1.3.4",
+    "vaul": "^1.1.2",
+    "vite-tsconfig-paths": "^6.0.2",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@lovable.dev/vite-tanstack-config": "2.8.5",
+    "@types/node": "^22.16.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^15.15.0",
+    "nitro": "3.0.260603-beta",
+    "prettier": "^3.7.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.56.1",
+    "vite": "^8.1.5"
+  }
+}
+
+
+=== TS CONFIG ===
+{
+  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts", "eslint.config.js"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true,
+
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+
+
+=== VITE ===
+// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
+// or the app will break with duplicate plugins:
+//   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
+//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
+//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
+// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+
+export default defineConfig({
+  tanstackStart: {
+    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
+    // nitro/vite builds from this
+    server: { entry: "server" },
+  },
+});
+
+
+=== COMPONENTS ===
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "css": "src/styles.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "registries": {}
+}
+
+
+=== TAILWIND ===
+
+
+=== README ===
+# Leonardo Lopes | Eleve-se
+
+Esse prompt eu dividiria em duas etapas. O Lovable possui limite de contexto e tende a degradar a qualidade quando recebe um PRD muito extenso em uma única solicitação. O ideal é usar um Prompt Master seguido por prompts incrementais. Porém, se o objetivo é iniciar o projeto criando toda a estrutura navegável, este seria o prompt inicial.
+
+
+
+⸻
+
+
+
+PROMPT MASTER — LEONARDO OS v1.0
+
+
+
+Você é um Product Designer Sênior, UX Researcher, UX Writer, UI Designer, Motion Designer, Arquiteto Front-end e Especialista em Produtos SaaS premiados internacionalmente.
+
+
+
+Sua missão é criar um produto digital premium chamado Leonardo OS, utilizando as melhores práticas de Design System, UX, UI, Motion Design e Arquitetura Front-end.
+
+
+
+O projeto deve possuir qualidade equivalente aos melhores cases publicados no Behance, Figma Community, Awwwards e Landbook.
+
+
+
+Não produza um site comum.
+
+
+
+Projete um produto digital de nível enterprise.
+
+
+
+Toda decisão deve priorizar clareza, sofisticação, usabilidade, consistência visual, acessibilidade, performance e escalabilidade.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+OBJETIVO
+
+
+
+Construir um protótipo navegável de alta fidelidade composto por:
+
+
+
+│ Landing Premium
+
+
+
+│ Portal do Aluno (B2C)
+
+
+
+│ Portal Corporativo (B2B)
+
+
+
+│ Painel Administrativo
+
+
+
+│ CMS Visual
+
+
+
+│ CRM
+
+
+
+│ Biblioteca de Mídia
+
+
+
+│ Avatar Evolutivo
+
+
+
+│ IA Coach
+
+
+
+Todo o sistema utilizará dados simulados (mock).
+
+
+
+Não implementar backend.
+
+
+
+Não criar autenticação real.
+
+
+
+Não utilizar banco de dados.
+
+
+
+Todo o foco deve estar na experiência visual e arquitetura do produto.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+POSICIONAMENTO
+
+
+
+Leonardo Lopes não é apenas um Personal Trainer.
+
+
+
+Ele é especialista em evolução física personalizada baseada em ciência, acompanhamento contínuo e qualidade de vida.
+
+
+
+A plataforma deve transmitir:
+
+
+
+│ Ciência
+
+
+
+│ Performance
+
+
+
+│ Movimento
+
+
+
+│ Evolução
+
+
+
+│ Trail Running
+
+
+
+│ Musculação
+
+
+
+│ Saúde
+
+
+
+│ Humanização
+
+
+
+│ Tecnologia
+
+
+
+Nunca utilizar aparência de academia tradicional.
+
+
+
+Nunca utilizar excesso de cores vibrantes.
+
+
+
+Nunca utilizar componentes genéricos.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+IDENTIDADE VISUAL
+
+
+
+Criar Design System próprio.
+
+
+
+Tipografia:
+
+
+
+Utilizar fontes modernas semelhantes a:
+
+
+
+│ Geist
+
+
+
+│ Inter
+
+
+
+│ General Sans
+
+
+
+│ Neue Montreal
+
+
+
+Visual extremamente limpo.
+
+
+
+Grid rigoroso.
+
+
+
+Espaçamentos consistentes.
+
+
+
+Ritmo visual.
+
+
+
+Hierarquia impecável.
+
+
+
+Alinhamentos perfeitos.
+
+
+
+Microtipografia refinada.
+
+
+
+Cartões sofisticados.
+
+
+
+Bordas discretas.
+
+
+
+Glassmorphism leve.
+
+
+
+Sombras suaves.
+
+
+
+Ícones outline.
+
+
+
+Sem excesso de elementos.
+
+
+
+Interface respirando.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+MOTION
+
+
+
+Utilizar Motion em praticamente toda a experiência.
+
+
+
+Hero
+
+
+
+Scroll
+
+
+
+Cards
+
+
+
+Gráficos
+
+
+
+Sidebar
+
+
+
+Menus
+
+
+
+Dashboards
+
+
+
+Timeline
+
+
+
+Botões
+
+
+
+Indicadores
+
+
+
+Loading
+
+
+
+Skeleton
+
+
+
+Hover
+
+
+
+Todos os movimentos devem ser suaves.
+
+
+
+Nunca exagerados.
+
+
+
+Sempre elegantes.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+LANDING PAGE
+
+
+
+Criar uma Landing cinematográfica.
+
+
+
+Estrutura:
+
+
+
+│ Hero
+
+
+
+│ Sobre Leonardo
+
+
+
+│ Metodologia
+
+
+
+│ Especialidades
+
+
+
+│ Resultados
+
+
+
+│ Antes e Depois
+
+
+
+│ Empresas
+
+
+
+│ Projetos
+
+
+
+│ Blog
+
+
+
+│ Produtos
+
+
+
+│ Depoimentos
+
+
+
+│ CTA
+
+
+
+│ Contato
+
+
+
+│ Rodapé
+
+
+
+Cada seção deve possuir identidade própria.
+
+
+
+Scroll storytelling.
+
+
+
+Layouts alternados.
+
+
+
+Elementos parallax.
+
+
+
+Animações refinadas.
+
+
+
+Responsividade perfeita.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+CMS VISUAL
+
+
+
+Toda a Landing deverá ser totalmente editável.
+
+
+
+Permitir editar:
+
+
+
+│ textos
+
+
+
+│ títulos
+
+
+
+│ subtítulos
+
+
+
+│ imagens
+
+
+
+│ vídeos
+
+
+
+│ botões
+
+
+
+│ cards
+
+
+
+│ ícones
+
+
+
+│ depoimentos
+
+
+
+│ logos
+
+
+
+│ FAQ
+
+
+
+│ rodapé
+
+
+
+Permitir:
+
+
+
+│ criar seção
+
+
+
+│ ocultar seção
+
+
+
+│ duplicar seção
+
+
+
+│ reorganizar seção
+
+
+
+│ alterar cores
+
+
+
+│ alterar fundos
+
+
+
+│ alterar animações
+
+
+
+Sem necessidade de programação.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+PORTAL DO ALUNO
+
+
+
+Criar uma experiência semelhante a um aplicativo.
+
+
+
+Menus:
+
+
+
+│ Dashboard
+
+
+
+│ Minha Evolução
+
+
+
+│ Avatar Evolutivo
+
+
+
+│ Treinos
+
+
+
+│ Avaliações
+
+
+
+│ Fotos
+
+
+
+│ Timeline
+
+
+
+│ Agenda
+
+
+
+│ IA Coach
+
+
+
+│ Materiais
+
+
+
+│ Mensagens
+
+
+
+│ Financeiro
+
+
+
+│ Perfil
+
+
+
+Dashboard moderno.
+
+
+
+Cards.
+
+
+
+Gráficos.
+
+
+
+Timeline.
+
+
+
+Indicadores.
+
+
+
+Estados de evolução.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+PORTAL B2B
+
+
+
+Criar ambiente exclusivo para empresas.
+
+
+
+Menus:
+
+
+
+│ Dashboard
+
+
+
+│ Funcionários
+
+
+
+│ Projetos
+
+
+
+│ Programas
+
+
+
+│ Campanhas
+
+
+
+│ Indicadores
+
+
+
+│ Analytics
+
+
+
+│ Relatórios
+
+
+
+│ Comunicação
+
+
+
+│ Financeiro
+
+
+
+Interface executiva.
+
+
+
+Painéis corporativos.
+
+
+
+Gráficos modernos.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+PAINEL ADMINISTRATIVO
+
+
+
+Criar interface SaaS Premium.
+
+
+
+Menus:
+
+
+
+│ Dashboard
+
+
+
+│ CRM
+
+
+
+│ Leads
+
+
+
+│ Alunos
+
+
+
+│ Empresas
+
+
+
+│ Treinos
+
+
+
+│ Avaliações
+
+
+
+│ Anamneses
+
+
+
+│ Avatar Evolutivo
+
+
+
+│ Editor de Objetivos
+
+
+
+│ Timeline
+
+
+
+│ Landing CMS
+
+
+
+│ Biblioteca
+
+
+
+│ Blog
+
+
+
+│ Produtos
+
+
+
+│ Financeiro
+
+
+
+│ Analytics
+
+
+
+│ Configurações
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+CRM
+
+
+
+Criar Pipeline.
+
+
+
+│ Lead
+
+
+
+│ Contato
+
+
+
+│ Avaliação
+
+
+
+│ Proposta
+
+
+
+│ Matrícula
+
+
+
+│ Ativo
+
+
+
+│ Pausado
+
+
+
+│ Encerrado
+
+
+
+Kanban moderno.
+
+
+
+Filtros.
+
+
+
+Pesquisa.
+
+
+
+Tags.
+
+
+
+Histórico.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+CAPTAÇÃO DE ALUNOS
+
+
+
+Implementar dois fluxos simulados.
+
+
+
+Fluxo 1
+
+
+
+Leonardo realiza pré-cadastro.
+
+
+
+Informa:
+
+
+
+│ Nome
+
+
+
+│ WhatsApp
+
+
+
+│ E-mail opcional
+
+
+
+Sistema gera convite.
+
+
+
+Aluno recebe link.
+
+
+
+Ao abrir o link:
+
+
+
+Os dados já estarão preenchidos.
+
+
+
+O aluno apenas:
+
+
+
+│ cria senha
+
+
+
+│ complementa cadastro
+
+
+
+│ aceita termos
+
+
+
+Fluxo 2
+
+
+
+Cadastro espontâneo.
+
+
+
+O visitante realiza cadastro diretamente pelo site.
+
+
+
+Após concluir, entra no CRM aguardando aprovação.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+BIBLIOTECA DE MÍDIA
+
+
+
+Criar gerenciador completo.
+
+
+
+Upload:
+
+
+
+│ imagens
+
+
+
+│ vídeos
+
+
+
+│ PDFs
+
+
+
+│ documentos
+
+
+
+│ logos
+
+
+
+Busca.
+
+
+
+Categorias.
+
+
+
+Tags.
+
+
+
+Pré-visualização.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+INCORPORAÇÕES
+
+
+
+Permitir inserir conteúdo através de URL ou iFrame.
+
+
+
+Suportar:
+
+
+
+│ Instagram
+
+
+
+│ Reels
+
+
+
+│ Feed
+
+
+
+│ YouTube
+
+
+
+│ Vimeo
+
+
+
+│ Spotify
+
+
+
+│ Google Maps
+
+
+
+Widgets configuráveis.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+AVATAR EVOLUTIVO
+
+
+
+Criar conceito proprietário.
+
+
+
+Fluxo:
+
+
+
+Captura Guiada
+
+
+
+↓
+
+
+
+Padronização
+
+
+
+↓
+
+
+
+Avatar
+
+
+
+↓
+
+
+
+Editor
+
+
+
+↓
+
+
+
+Objetivos
+
+
+
+↓
+
+
+
+Timeline
+
+
+
+↓
+
+
+
+Comparação
+
+
+
+↓
+
+
+
+Metas
+
+
+
+Criar interface sofisticada.
+
+
+
+Não implementar IA real.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+IA COACH
+
+
+
+Criar interface de chat.
+
+
+
+Mensagens simuladas.
+
+
+
+Resumo semanal.
+
+
+
+Metas.
+
+
+
+Insights.
+
+
+
+Alertas.
+
+
+
+Sugestões.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+RESPONSIVIDADE
+
+
+
+Desktop.
+
+
+
+Tablet.
+
+
+
+Mobile.
+
+
+
+Mobile First.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+TECNOLOGIA
+
+
+
+Utilizar:
+
+
+
+React 19
+
+
+
+TypeScript
+
+
+
+TanStack Start
+
+
+
+Tailwind CSS v4
+
+
+
+Motion
+
+
+
+Zustand
+
+
+
+TanStack Query
+
+
+
+Arquitetura baseada em componentes reutilizáveis.
+
+
+
+Código limpo.
+
+
+
+Separação por domínio.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+
+REGRAS
+
+
+
+Não utilizar layouts genéricos.
+
+
+
+Não copiar templates prontos.
+
+
+
+Não utilizar Bootstrap.
+
+
+
+Não utilizar Material UI.
+
+
+
+Não utilizar componentes datados.
+
+
+
+Criar interface original.
+
+
+
+Criar experiência premium.
+
+
+
+Criar design digno de um case internacional.
+
+
+
+Cada tela deve parecer pronta para publicação em Behance e Figma Community.
+
+
+
+O resultado esperado é um protótipo navegável de altíssima fidelidade, preparado para posterior refatoração no VS Code, integração com Supabase, GitHub e deploy em VPS, preservando uma arquitetura escalável e pronta para evolução futura em uma plataforma SaaS multi-tenant. Escopo solicitado.txt
+
+This project was built with [Lovable](https://lovable.dev).
+
+**Live app**: https://leolopes.lovable.app
+
+## Build with Lovable
+
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/cbd8177d-f741-4e9b-b5e5-8e58e0fa79d1).
+
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+
+## Development
+
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+
+```sh
+git clone <this-repository-url>
+cd <repository-name>
+npm i
+npm run dev
+```
+
+
+=== ROOT FILES ===
+./.gitignore
+./.prettierignore
+./.prettierrc
+./AGENTS.md
+./README.md
+./bun.lock
+./bunfig.toml
+./components.json
+./eslint.config.js
+./package-lock.json
+./package.json
+./tsconfig.json
+./vite.config.ts
