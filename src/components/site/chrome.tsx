@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@/assets/logo-leonardo.jpg.asset.json";
+import logo from "@/assets/logo-leonardo-shield-light.png.asset.json";
 import { contact } from "@/lib/mock";
 
 const nav = [
@@ -32,7 +32,7 @@ export function SiteHeader() {
             alt="Logotipo Leonardo Lopes"
             width={40}
             height={40}
-            className="size-10 shrink-0 rounded-lg object-cover"
+            className="size-10 shrink-0 object-contain"
           />
           <span className="min-w-0">
             <span className="block truncate text-sm font-semibold tracking-tight">Leonardo Lopes</span>
@@ -126,7 +126,7 @@ export function SiteFooter() {
                 width={44}
                 height={44}
                 loading="lazy"
-                className="size-11 rounded-lg object-cover"
+                className="size-11 object-contain"
               />
               <div>
                 <p className="text-sm font-semibold">Leonardo Lopes</p>

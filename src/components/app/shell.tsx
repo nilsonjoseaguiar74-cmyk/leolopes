@@ -2,7 +2,7 @@ import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { ArrowLeft, Bell, Menu, Search, X } from "lucide-react";
 import { useState, type ComponentType } from "react";
-import logo from "@/assets/logo-leonardo.jpg.asset.json";
+import logo from "@/assets/logo-leonardo-shield-light.png.asset.json";
 
 export type NavItem = { label: string; to: string; icon: ComponentType<{ className?: string }> };
 
@@ -127,7 +127,7 @@ function SidebarBody({
           alt="Logotipo Leonardo Lopes"
           width={36}
           height={36}
-          className="size-9 shrink-0 rounded-lg object-cover"
+          className="size-9 shrink-0 object-contain"
         />
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold">Leonardo OS</p>
