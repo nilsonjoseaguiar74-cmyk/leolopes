@@ -6,6 +6,8 @@ import {
   ArrowUpRight,
   Activity,
   Check,
+  ChevronLeft,
+  ChevronRight,
   MessageCircle,
   Quote,
   Sparkles,
@@ -13,7 +15,7 @@ import {
 
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { SiteFooter, SiteHeader } from "@/components/site/chrome";
-import heroAsset from "@/assets/leonardo-hero.jpg.asset.json";
+import heroAsset from "@/assets/leonardo-mono-hero.jpg.asset.json";
 import portraitAsset from "@/assets/leonardo-run-portrait.jpg.asset.json";
 import raceAsset from "@/assets/leonardo-race.jpg.asset.json";
 import {
