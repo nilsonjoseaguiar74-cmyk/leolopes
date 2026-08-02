@@ -103,7 +103,7 @@ function Hero() {
         width={1600}
         height={1008}
         style={{ y, scale }}
-        className="absolute inset-0 size-full object-cover object-center opacity-70"
+        className="absolute inset-0 size-full object-cover object-[50%_22%] opacity-60 saturate-[0.9]"
       />
       <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
       <div className="grid-lines absolute inset-0 opacity-40" />
