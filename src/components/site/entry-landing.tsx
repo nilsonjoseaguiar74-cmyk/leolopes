@@ -330,6 +330,8 @@ export function EntryLanding() {
           <Contour key={i} index={i} total={9} x={x} y={y} reduced={reduced} />
         ))}
 
+        <AscentTrail x={x} reduced={reduced} />
+
         <Ridge x={x} y={y} />
 
         {/* mist */}
