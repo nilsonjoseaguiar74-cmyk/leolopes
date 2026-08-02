@@ -370,7 +370,7 @@ export function EntryLanding() {
               alt="Logotipo Leonardo Lopes"
               width={1200}
               height={1119}
-              className="w-[72vw] max-w-[460px] select-none sm:w-[42vw]"
+              className="w-[52vw] max-w-[300px] select-none sm:w-[28vw]"
               animate={reduced ? { y: 0 } : { y: [0, -10, 0] }}
               transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -384,7 +384,7 @@ export function EntryLanding() {
           initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ delay: 1.5, duration: 1.1, ease: EASE }}
-          className="mt-2 max-w-[22ch] text-balance text-lg font-medium tracking-tight text-foreground/90 sm:text-2xl"
+          className="mt-1 max-w-[22ch] text-balance text-base font-medium tracking-tight text-foreground/90 sm:text-lg"
         >
           O próximo passo começa aqui.
         </motion.p>
