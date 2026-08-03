@@ -30,3 +30,26 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables (avoid committing secrets)
+.env
+.env.local
+.env.*
+
+# Caches and coverage
+.cache/
+coverage/
+.vite/
+.parcel-cache/
+.eslintcache
+
+# Build / deployment files
+.vercel/
+.netlify/
+.firebase/
+.serverless/
+
+# Misc
+*.tgz
+
+# NOTE: Do NOT ignore lockfiles (package-lock.json, yarn.lock, pnpm-lock.yaml) unless you have a specific reason — committing them ensures reproducible installs.
